@@ -48,6 +48,8 @@ to make it able to build and run on macOS. What we did are including
   LFH264VideoEncoder.
 * Some video filters are removes temporarily in order to make the
   project simpler while doing porting.
+* Settings for camera torch and rotation are removed as well, since
+  macOS does not support them.
 
 Enjoy!
 
