@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
@@ -365,6 +365,13 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
+                                        <menuItem title="LaiFeng Mac Port" id="I2X-gK-72J">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="viewMainWindow:" target="Voe-Tx-rLC" id="BO3-pn-jpM"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="rrw-4e-JgK"/>
                                         <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -400,12 +407,13 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Laifeng Mac Port" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="IQv-IB-iLA">
+                <windowController storyboardIdentifier="WindowController" showSeguePresentationStyle="single" id="B8D-0N-5wS" sceneMemberID="viewController">
+                    <window key="window" title="LaiFeng Mac Port" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="480" height="400"/>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -423,8 +431,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="589"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="CuL-nH-1vM">
-                                <rect key="frame" x="0.0" y="27" width="480" height="380"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="CuL-nH-1vM" customClass="PreviewView">
+                                <rect key="frame" x="0.0" y="45" width="480" height="362"/>
                             </customView>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GCa-fT-YRc">
                                 <rect key="frame" x="113" y="515" width="350" height="26"/>
@@ -502,16 +510,6 @@
                                     <action selector="startLive:" target="XfG-lQ-9wD" id="bbD-Nv-8WL"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IBj-HQ-SAR">
-                                <rect key="frame" x="209" y="412" width="97" height="32"/>
-                                <buttonCell key="cell" type="push" title="Stop Live" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0XS-pA-s21">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="stoptLive:" target="XfG-lQ-9wD" id="owW-VB-QyQ"/>
-                                </connections>
-                            </button>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bTt-uy-0Np">
                                 <rect key="frame" x="18" y="546" width="445" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Audio and Video" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="EkS-Ms-do9" id="xOX-2g-vrf">
@@ -531,18 +529,25 @@
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="7c9-EC-c2m">
                                 <rect key="frame" x="115" y="449" width="343" height="5"/>
                             </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1L-t6-UjN">
+                                <rect key="frame" x="18" y="20" width="452" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="MdN-gM-ybx">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="yyS-VO-gKA" firstAttribute="trailing" secondItem="7c9-EC-c2m" secondAttribute="trailing" id="1d4-X9-ZIc"/>
                             <constraint firstItem="6OM-eA-UlG" firstAttribute="leading" secondItem="yyS-VO-gKA" secondAttribute="leading" id="3Bb-l4-xAQ"/>
                             <constraint firstItem="wqu-lZ-W4h" firstAttribute="centerX" secondItem="erL-ER-Fqu" secondAttribute="centerX" id="3H0-I3-HvV"/>
-                            <constraint firstItem="CuL-nH-1vM" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="4VI-d8-3Vc"/>
                             <constraint firstItem="6OM-eA-UlG" firstAttribute="top" secondItem="GCa-fT-YRc" secondAttribute="bottom" constant="8" id="6lB-DA-MsS"/>
                             <constraint firstItem="7c9-EC-c2m" firstAttribute="top" secondItem="yyS-VO-gKA" secondAttribute="bottom" constant="8" symbolic="YES" id="6rW-zo-iYP"/>
-                            <constraint firstItem="8Fv-vb-lrf" firstAttribute="baseline" secondItem="IBj-HQ-SAR" secondAttribute="baseline" id="G8y-0a-iOk"/>
                             <constraint firstItem="bTt-uy-0Np" firstAttribute="trailing" secondItem="GCa-fT-YRc" secondAttribute="trailing" id="IGu-md-p3j"/>
-                            <constraint firstItem="CuL-nH-1vM" firstAttribute="top" secondItem="8Fv-vb-lrf" secondAttribute="bottom" constant="12" id="NBa-hf-i8w"/>
+                            <constraint firstItem="p1L-t6-UjN" firstAttribute="leading" secondItem="wqu-lZ-W4h" secondAttribute="leading" id="MiC-jg-ptV"/>
                             <constraint firstItem="eD4-An-kvi" firstAttribute="centerY" secondItem="GCa-fT-YRc" secondAttribute="centerY" id="PO1-2d-xZU"/>
+                            <constraint firstItem="CuL-nH-1vM" firstAttribute="centerX" secondItem="bTt-uy-0Np" secondAttribute="centerX" id="Q5V-4N-3YK"/>
                             <constraint firstItem="eD4-An-kvi" firstAttribute="leading" secondItem="wqu-lZ-W4h" secondAttribute="leading" id="StE-4h-0en"/>
                             <constraint firstItem="bTt-uy-0Np" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="19" id="THi-H7-H8g"/>
                             <constraint firstItem="GCa-fT-YRc" firstAttribute="leading" secondItem="6OM-eA-UlG" secondAttribute="leading" id="Vbg-MT-BHw"/>
@@ -551,24 +556,26 @@
                             <constraint firstItem="GCa-fT-YRc" firstAttribute="top" secondItem="bTt-uy-0Np" secondAttribute="bottom" constant="10" symbolic="YES" id="YjB-iq-gMD"/>
                             <constraint firstAttribute="trailing" secondItem="yyS-VO-gKA" secondAttribute="trailing" constant="22" id="ZAN-3F-mgH"/>
                             <constraint firstAttribute="trailing" secondItem="bTt-uy-0Np" secondAttribute="trailing" constant="20" symbolic="YES" id="a2P-ef-3q1"/>
-                            <constraint firstItem="IBj-HQ-SAR" firstAttribute="leading" secondItem="8Fv-vb-lrf" secondAttribute="trailing" constant="12" symbolic="YES" id="agN-Ui-A4V"/>
-                            <constraint firstAttribute="trailing" secondItem="CuL-nH-1vM" secondAttribute="trailing" id="beG-uc-Ta7"/>
+                            <constraint firstAttribute="bottom" secondItem="CuL-nH-1vM" secondAttribute="bottom" constant="45" id="b4s-oJ-mSb"/>
+                            <constraint firstItem="p1L-t6-UjN" firstAttribute="top" secondItem="CuL-nH-1vM" secondAttribute="bottom" constant="8" symbolic="YES" id="bQN-wU-7FO"/>
                             <constraint firstItem="yyS-VO-gKA" firstAttribute="leading" secondItem="7c9-EC-c2m" secondAttribute="leading" id="bhh-Ht-BYL"/>
                             <constraint firstItem="8Fv-vb-lrf" firstAttribute="top" secondItem="7c9-EC-c2m" secondAttribute="bottom" constant="11" id="cZN-Gf-SZt"/>
+                            <constraint firstAttribute="trailing" secondItem="p1L-t6-UjN" secondAttribute="trailing" constant="12" id="eLt-gm-I7q"/>
                             <constraint firstItem="bTt-uy-0Np" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="eks-9z-nEp"/>
                             <constraint firstItem="bTt-uy-0Np" firstAttribute="leading" secondItem="eD4-An-kvi" secondAttribute="leading" id="g4A-6t-KCK"/>
+                            <constraint firstItem="CuL-nH-1vM" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="hgx-Fc-r7H"/>
                             <constraint firstItem="8Fv-vb-lrf" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="117" id="hux-PA-cOt"/>
-                            <constraint firstItem="CuL-nH-1vM" firstAttribute="top" secondItem="IBj-HQ-SAR" secondAttribute="bottom" constant="12" id="icX-6s-oGA"/>
-                            <constraint firstAttribute="bottom" secondItem="CuL-nH-1vM" secondAttribute="bottom" constant="27" id="meb-mC-bNH"/>
                             <constraint firstItem="yyS-VO-gKA" firstAttribute="top" secondItem="6OM-eA-UlG" secondAttribute="bottom" constant="7" id="mjd-3B-0qo"/>
-                            <constraint firstItem="CuL-nH-1vM" firstAttribute="centerX" secondItem="bTt-uy-0Np" secondAttribute="centerX" id="mkL-Rh-uOO"/>
                             <constraint firstItem="6OM-eA-UlG" firstAttribute="leading" secondItem="wqu-lZ-W4h" secondAttribute="trailing" constant="8" symbolic="YES" id="vXK-0C-1nP"/>
                             <constraint firstItem="wqu-lZ-W4h" firstAttribute="top" secondItem="6OM-eA-UlG" secondAttribute="top" id="vtI-jI-m9T"/>
+                            <constraint firstItem="CuL-nH-1vM" firstAttribute="top" secondItem="8Fv-vb-lrf" secondAttribute="bottom" constant="12" id="yvZ-fg-XJ8"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="audioDevicesPopUpButton" destination="GCa-fT-YRc" id="WVN-wV-f06"/>
                         <outlet property="broadcastOptionPopUpButton" destination="bTt-uy-0Np" id="UkG-0b-NYw"/>
+                        <outlet property="liveButton" destination="8Fv-vb-lrf" id="rtP-8Y-o4Y"/>
+                        <outlet property="messageLabel" destination="p1L-t6-UjN" id="FWV-TP-Km0"/>
                         <outlet property="preview" destination="CuL-nH-1vM" id="wQa-eO-a8X"/>
                         <outlet property="rtmpURLTextField" destination="yyS-VO-gKA" id="xN2-Dm-OLo"/>
                         <outlet property="videoDevicesPopUpButton" destination="6OM-eA-UlG" id="now-KT-Ceq"/>

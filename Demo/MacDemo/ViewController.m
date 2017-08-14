@@ -1,21 +1,46 @@
-#import <QuartzCore/QuartzCore.h>
-#import <AVFoundation/AVFoundation.h>
+@import QuartzCore;
+@import AVFoundation;
 #import <LFLiveKit.h>
 #import "ViewController.h"
+
+@interface PreviewView: NSView
+@end
+
+@implementation PreviewView
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+	if ([self needsToDrawRect:dirtyRect]) {
+		[[NSColor blackColor] setFill];
+		NSRectFill(dirtyRect);
+	}
+}
+
+@end
+
+typedef NS_ENUM(NSUInteger, ViewControllerState) {
+	ViewControllerStateNotConnected,
+	ViewControllerStateConnecting,
+	ViewControllerStateConnected,
+	ViewControllerStateError
+};
 
 @interface ViewController () <LFLiveSessionDelegate>
 {
 	LFLiveSession *_session;
 }
 
-@property (assign) BOOL broadcasting;
 @property (strong) NSString *currentURL;
 
+@property (weak) IBOutlet NSButton *liveButton;
+@property (weak) IBOutlet NSTextField *messageLabel;
 @property (weak) IBOutlet NSPopUpButton *audioDevicesPopUpButton;
 @property (weak) IBOutlet NSPopUpButton *videoDevicesPopUpButton;
 @property (weak) IBOutlet NSTextField *rtmpURLTextField;
 @property (weak) IBOutlet NSPopUpButton *broadcastOptionPopUpButton;
 @property (weak) IBOutlet NSView *preview;
+
+@property (assign, nonatomic) ViewControllerState state;
 
 @property (strong) AVCaptureDevice *currentAudioDevice;
 @property (strong) AVCaptureDevice *currentVideoDevice;
@@ -23,7 +48,7 @@
 - (IBAction)setAudioDevice:(id)sender;
 - (IBAction)setVideoDevice:(id)sender;
 - (IBAction)startLive:(id)sender;
-- (IBAction)stoptLive:(id)sender;
+- (IBAction)stopLive:(id)sender;
 @end
 
 @implementation ViewController
@@ -49,10 +74,11 @@
 
 	NSString *rtmpURL = [[NSUserDefaults standardUserDefaults] stringForKey:@"rtmpURL"];
 	if (!rtmpURL) {
-		rtmpURL = @"rtmp://a.rtmp.youtube.com/live2/34us-pa9j-pze6-9whs";
+		rtmpURL = @"rtmp://...";
 		[[NSUserDefaults standardUserDefaults] setObject:rtmpURL forKey:@"rtmpURL"];
 	}
 	self.rtmpURLTextField.stringValue = rtmpURL;
+	self.state = ViewControllerStateNotConnected;
 }
 
 - (void)_updateAudioDevices
@@ -99,7 +125,7 @@
 	_session = nil;
 	self.session.running = YES;
 	_session.preView = self.preview;
-	if (self.broadcasting) {
+	if (self.state == ViewControllerStateConnected) {
 		[self.session stopLive];
 		LFLiveStreamInfo *streamInfo = [LFLiveStreamInfo new];
 		streamInfo.url = self.currentURL;
@@ -133,26 +159,20 @@
 	NSString *rtmpURL = self.rtmpURLTextField.stringValue;
 	self.currentURL = rtmpURL;
 	streamInfo.url = rtmpURL;
+	[[NSUserDefaults standardUserDefaults] setObject:rtmpURL forKey:@"rtmpURL"];
 	[self.session startLive:streamInfo];
-	self.broadcasting = YES;
 }
 
-- (IBAction)stoptLive:(id)sender
+- (IBAction)stopLive:(id)sender
 {
 	[self.session stopLive];
-	self.broadcasting = NO;
-}
-
-- (void)setRepresentedObject:(id)representedObject
-{
-	[super setRepresentedObject:representedObject];
 }
 
 - (LFLiveSession *)session
 {
 	if (!_session) {
 		LFLiveAudioConfiguration *audioConfig = [LFLiveAudioConfiguration defaultConfiguration];
-		LFLiveVideoConfiguration *videoConfig = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium3];
+		LFLiveVideoConfiguration *videoConfig = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1];
 		videoConfig.videoSize = CGSizeMake(640, 640);
 		AVCaptureDevice *audioDevice = [LFLiveSession availableAudioDevices][self.audioDevicesPopUpButton.indexOfSelectedItem];
 		AVCaptureDevice *videoDevice = [LFLiveSession availableCameraDevices][self.videoDevicesPopUpButton.indexOfSelectedItem];
@@ -188,9 +208,62 @@
 
 #pragma mark -
 
+- (void)setState:(ViewControllerState)state
+{
+	_state = state;
+	switch (_state) {
+		case ViewControllerStateNotConnected:
+			self.rtmpURLTextField.editable = YES;
+			self.rtmpURLTextField.enabled = YES;
+			self.liveButton.title = NSLocalizedString(@"Start Live", @"");
+			self.liveButton.action = @selector(startLive:);
+			self.messageLabel.stringValue = @"";
+			break;
+		case ViewControllerStateConnecting:
+			self.rtmpURLTextField.editable = NO;
+			self.rtmpURLTextField.enabled = NO;
+			self.liveButton.title = NSLocalizedString(@"Connecting", @"");
+			self.liveButton.action = NULL;
+			self.messageLabel.stringValue = NSLocalizedString(@"Connecting...", @"");
+			break;
+		case ViewControllerStateConnected:
+			self.rtmpURLTextField.editable = NO;
+			self.rtmpURLTextField.enabled = NO;
+			self.liveButton.title = NSLocalizedString(@"Stop Live", @"");
+			self.liveButton.action = @selector(stopLive:);
+			self.messageLabel.stringValue = NSLocalizedString(@"Connected.", @"");
+			break;
+		case ViewControllerStateError:
+			self.rtmpURLTextField.editable = YES;
+			self.rtmpURLTextField.enabled = YES;
+			self.liveButton.title = NSLocalizedString(@"Stop Live", @"");
+			self.liveButton.action = @selector(startLive:);
+			self.messageLabel.stringValue = NSLocalizedString(@"Error.", @"");
+			break;
+		default:
+			break;
+	}
+}
+
 - (void)liveSession:(nullable LFLiveSession *)session liveStateDidChange:(LFLiveState)state
 {
 	NSLog(@"%s %lu", __PRETTY_FUNCTION__, (unsigned long)state);
+	switch (state) {
+		case LFLivePending:
+			self.state = ViewControllerStateConnecting;
+			break;
+		case LFLiveStart:
+			self.state = ViewControllerStateConnected;
+			break;
+		case LFLiveStop:
+			self.state = ViewControllerStateNotConnected;
+			break;
+		case LFLiveError:
+			self.state = ViewControllerStateError;
+			break;
+		default:
+			break;
+	}
 }
 
 - (void)liveSession:(nullable LFLiveSession *)session debugInfo:(nullable LFLiveDebug *)debugInfo
@@ -201,7 +274,7 @@
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode
 {
 	NSLog(@"%s %lu", __PRETTY_FUNCTION__, (unsigned long)errorCode);
-	self.broadcasting = NO;
+	self.state = ViewControllerStateError;
 }
 
 @end

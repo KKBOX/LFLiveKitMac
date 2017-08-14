@@ -134,7 +134,8 @@
 {
 	if (!_gpuImageView) {
 		_gpuImageView = [[GPUImageView alloc] initWithFrame:NSZeroRect];
-		[_gpuImageView setFillMode:kGPUImageFillModePreserveAspectRatioAndFill];
+//		[_gpuImageView setFillMode:kGPUImageFillModePreserveAspectRatioAndFill];
+		[_gpuImageView setFillMode:kGPUImageFillModePreserveAspectRatio];
 		[_gpuImageView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 	}
 	return _gpuImageView;
@@ -171,15 +172,16 @@
 	[self.filter removeAllTargets];
 	[self.output removeAllTargets];
 
-	CGRect cropRect = CGRectMake((16. - 9.) / 16. / 2., 0, 9. / 16., 1);
+//	CGRect cropRect = CGRectMake((16. - 9.) / 16. / 2., 0, 9. / 16., 1);
+	CGRect cropRect = CGRectMake(0, 0, 1, 1);
 	self.filter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
 	self.output = [[LFGPUImageEmptyFilter alloc] init];
 
 	[self.videoCamera addTarget:self.filter];
 	[self.filter addTarget:self.gpuImageView];
 	[self.filter addTarget:self.output];
-//	[self.filter forceProcessingAtSize:self.configuration.videoSize];
-	[self.filter forceProcessingAtSize:CGSizeMake(640, 640)];
+	[self.filter forceProcessingAtSize:self.configuration.videoSize];
+//	[self.filter forceProcessingAtSize:CGSizeMake(640, 640)];
 
 	__weak typeof(self) _self = self;
 

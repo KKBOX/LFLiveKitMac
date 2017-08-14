@@ -1,7 +1,4 @@
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-
-
 @end
-
