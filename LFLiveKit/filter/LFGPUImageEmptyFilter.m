@@ -1,20 +1,5 @@
 #import "LFGPUImageEmptyFilter.h"
 
-#if TARGET_OS_IOS
-NSString *const kLFGPUImageEmptyFragmentShaderString = SHADER_STRING
-													   (
-	varying highp vec2 textureCoordinate;
-
-	uniform sampler2D inputImageTexture;
-
-	void main(){
-	lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-
-	gl_FragColor = vec4((textureColor.rgb), textureColor.w);
-}
-
-													   );
-#else
 NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
 (varying
 		vec2 textureCoordinate;
@@ -24,18 +9,14 @@ NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
 
 		void main() {
 			vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-
 			gl_FragColor = vec4((textureColor.rgb), textureColor.w);
 		}
-
 );
-#endif
 
 @implementation LFGPUImageEmptyFilter
 
 - (id)init;
 {
-//    if (!(self = [super initWithFragmentShaderFromString:kLFGPUImageEmptyFragmentShaderString])) {
 	if (!(self = [super initWithFragmentShaderFromString:kGPUImageInvertFragmentShaderString])) {
 		return nil;
 	}
