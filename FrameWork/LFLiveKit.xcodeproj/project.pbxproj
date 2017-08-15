@@ -630,9 +630,6 @@
 		84D8B5E81D768B6E00752B56 /* LFStreamSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 84D8B5B81D768B6E00752B56 /* LFStreamSocket.h */; };
 		84D8B5E91D768B6E00752B56 /* NSMutableArray+LFAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = 84D8B5B91D768B6E00752B56 /* NSMutableArray+LFAdd.h */; };
 		84D8B5EA1D768B6E00752B56 /* NSMutableArray+LFAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8B5BA1D768B6E00752B56 /* NSMutableArray+LFAdd.m */; };
-		D41BA8B21F2ECFD0006AF0AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D41BA8A31F2ECFD0006AF0AB /* InfoPlist.strings */; };
-		D41BA8B31F2ECFD0006AF0AB /* GPUImage.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8A51F2ECFD0006AF0AB /* GPUImage.h */; };
-		D41BA8B41F2ECFD0006AF0AB /* GPUImage.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8A51F2ECFD0006AF0AB /* GPUImage.h */; };
 		D41BA8B51F2ECFD0006AF0AB /* GPUImageAVCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8A61F2ECFD0006AF0AB /* GPUImageAVCamera.h */; };
 		D41BA8B61F2ECFD0006AF0AB /* GPUImageAVCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8A61F2ECFD0006AF0AB /* GPUImageAVCamera.h */; };
 		D41BA8B71F2ECFD0006AF0AB /* GPUImageAVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8A71F2ECFD0006AF0AB /* GPUImageAVCamera.m */; };
@@ -641,9 +638,6 @@
 		D41BA8BA1F2ECFD0006AF0AB /* GPUImageContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8A81F2ECFD0006AF0AB /* GPUImageContext.h */; };
 		D41BA8BB1F2ECFD0006AF0AB /* GPUImageContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8A91F2ECFD0006AF0AB /* GPUImageContext.m */; };
 		D41BA8BC1F2ECFD0006AF0AB /* GPUImageContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8A91F2ECFD0006AF0AB /* GPUImageContext.m */; };
-		D41BA8BD1F2ECFD0006AF0AB /* GPUImageMac-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D41BA8AA1F2ECFD0006AF0AB /* GPUImageMac-Info.plist */; };
-		D41BA8BE1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8AB1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch */; };
-		D41BA8BF1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8AB1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch */; };
 		D41BA8C01F2ECFD0006AF0AB /* GPUImageMovieWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8AC1F2ECFD0006AF0AB /* GPUImageMovieWriter.h */; };
 		D41BA8C11F2ECFD0006AF0AB /* GPUImageMovieWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D41BA8AC1F2ECFD0006AF0AB /* GPUImageMovieWriter.h */; };
 		D41BA8C21F2ECFD0006AF0AB /* GPUImageMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8AD1F2ECFD0006AF0AB /* GPUImageMovieWriter.m */; };
@@ -1078,14 +1072,10 @@
 		84D8B5B81D768B6E00752B56 /* LFStreamSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFStreamSocket.h; sourceTree = "<group>"; };
 		84D8B5B91D768B6E00752B56 /* NSMutableArray+LFAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+LFAdd.h"; sourceTree = "<group>"; };
 		84D8B5BA1D768B6E00752B56 /* NSMutableArray+LFAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+LFAdd.m"; sourceTree = "<group>"; };
-		D41BA8A41F2ECFD0006AF0AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D41BA8A51F2ECFD0006AF0AB /* GPUImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImage.h; sourceTree = "<group>"; };
 		D41BA8A61F2ECFD0006AF0AB /* GPUImageAVCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageAVCamera.h; sourceTree = "<group>"; };
 		D41BA8A71F2ECFD0006AF0AB /* GPUImageAVCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageAVCamera.m; sourceTree = "<group>"; };
 		D41BA8A81F2ECFD0006AF0AB /* GPUImageContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageContext.h; sourceTree = "<group>"; };
 		D41BA8A91F2ECFD0006AF0AB /* GPUImageContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageContext.m; sourceTree = "<group>"; };
-		D41BA8AA1F2ECFD0006AF0AB /* GPUImageMac-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GPUImageMac-Info.plist"; sourceTree = "<group>"; };
-		D41BA8AB1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GPUImageMac-Prefix.pch"; sourceTree = "<group>"; };
 		D41BA8AC1F2ECFD0006AF0AB /* GPUImageMovieWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageMovieWriter.h; sourceTree = "<group>"; };
 		D41BA8AD1F2ECFD0006AF0AB /* GPUImageMovieWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageMovieWriter.m; sourceTree = "<group>"; };
 		D41BA8AE1F2ECFD0006AF0AB /* GPUImagePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImagePicture.h; sourceTree = "<group>"; };
@@ -1644,14 +1634,10 @@
 		D41BA8A21F2ECFD0006AF0AB /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				D41BA8A31F2ECFD0006AF0AB /* InfoPlist.strings */,
-				D41BA8A51F2ECFD0006AF0AB /* GPUImage.h */,
 				D41BA8A61F2ECFD0006AF0AB /* GPUImageAVCamera.h */,
 				D41BA8A71F2ECFD0006AF0AB /* GPUImageAVCamera.m */,
 				D41BA8A81F2ECFD0006AF0AB /* GPUImageContext.h */,
 				D41BA8A91F2ECFD0006AF0AB /* GPUImageContext.m */,
-				D41BA8AA1F2ECFD0006AF0AB /* GPUImageMac-Info.plist */,
-				D41BA8AB1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch */,
 				D41BA8AC1F2ECFD0006AF0AB /* GPUImageMovieWriter.h */,
 				D41BA8AD1F2ECFD0006AF0AB /* GPUImageMovieWriter.m */,
 				D41BA8AE1F2ECFD0006AF0AB /* GPUImagePicture.h */,
@@ -1669,14 +1655,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D41BA8BF1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch in Headers */,
 				8495F6861DB8F1EE00542124 /* LFLiveDebug.h in Headers */,
 				8495F6881DB8F1EE00542124 /* LFVideoFrame.h in Headers */,
 				8495F6871DB8F1EE00542124 /* LFLiveStreamInfo.h in Headers */,
 				8495F6851DB8F1EE00542124 /* LFFrame.h in Headers */,
 				8495F6841DB8F1EE00542124 /* LFAudioFrame.h in Headers */,
 				8495F67F1DB8F1EE00542124 /* LFLiveVideoConfiguration.h in Headers */,
-				D41BA8B41F2ECFD0006AF0AB /* GPUImage.h in Headers */,
 				8495F67E1DB8F1EE00542124 /* LFLiveAudioConfiguration.h in Headers */,
 				8495F6831DB8F1EE00542124 /* LFLiveSession.h in Headers */,
 				8495F66F1DB8F14600542124 /* LFLiveKitFramework.h in Headers */,
@@ -1845,7 +1829,6 @@
 				843590931DD1FEB600811FC7 /* GPUImageLightenBlendFilter.h in Headers */,
 				843590271DD1FEB600811FC7 /* GPUImageColorMatrixFilter.h in Headers */,
 				843591391DD1FEB600811FC7 /* GPUImageVoronoiConsumerFilter.h in Headers */,
-				D41BA8BE1F2ECFD0006AF0AB /* GPUImageMac-Prefix.pch in Headers */,
 				843590751DD1FEB600811FC7 /* GPUImageHighPassFilter.h in Headers */,
 				843591271DD1FEB600811FC7 /* GPUImageTransformFilter.h in Headers */,
 				843590DD1DD1FEB600811FC7 /* GPUImageRawDataInput.h in Headers */,
@@ -1900,7 +1883,6 @@
 				843590131DD1FEB600811FC7 /* GPUImageCGAColorspaceFilter.h in Headers */,
 				84D8B5E41D768B6E00752B56 /* LFStreamingBuffer.h in Headers */,
 				8435905F1DD1FEB600811FC7 /* GPUImageGaussianBlurFilter.h in Headers */,
-				D41BA8B31F2ECFD0006AF0AB /* GPUImage.h in Headers */,
 				8435912F1DD1FEB600811FC7 /* GPUImageTwoPassTextureSamplingFilter.h in Headers */,
 				8435904B1DD1FEB600811FC7 /* GPUImageExposureFilter.h in Headers */,
 				8435902F1DD1FEB600811FC7 /* GPUImageContrastFilter.h in Headers */,
@@ -2003,8 +1985,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D41BA8B21F2ECFD0006AF0AB /* InfoPlist.strings in Resources */,
-				D41BA8BD1F2ECFD0006AF0AB /* GPUImageMac-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2457,17 +2437,6 @@
 			targetProxy = 84D003791DB8FE1800560583 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		D41BA8A31F2ECFD0006AF0AB /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D41BA8A41F2ECFD0006AF0AB /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		8495F6711DB8F14600542124 /* Debug */ = {
