@@ -952,8 +952,6 @@
 		84358F9D1DD1FEB600811FC7 /* GPUImageSourceOverBlendFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageSourceOverBlendFilter.m; sourceTree = "<group>"; };
 		84358F9E1DD1FEB600811FC7 /* GPUImageSphereRefractionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageSphereRefractionFilter.h; sourceTree = "<group>"; };
 		84358F9F1DD1FEB600811FC7 /* GPUImageSphereRefractionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageSphereRefractionFilter.m; sourceTree = "<group>"; };
-		84358FA01DD1FEB600811FC7 /* GPUImageStillCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageStillCamera.h; sourceTree = "<group>"; };
-		84358FA11DD1FEB600811FC7 /* GPUImageStillCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageStillCamera.m; sourceTree = "<group>"; };
 		84358FA21DD1FEB600811FC7 /* GPUImageStretchDistortionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageStretchDistortionFilter.h; sourceTree = "<group>"; };
 		84358FA31DD1FEB600811FC7 /* GPUImageStretchDistortionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageStretchDistortionFilter.m; sourceTree = "<group>"; };
 		84358FA41DD1FEB600811FC7 /* GPUImageSubtractBlendFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageSubtractBlendFilter.h; sourceTree = "<group>"; };
@@ -1410,8 +1408,6 @@
 				84358F9D1DD1FEB600811FC7 /* GPUImageSourceOverBlendFilter.m */,
 				84358F9E1DD1FEB600811FC7 /* GPUImageSphereRefractionFilter.h */,
 				84358F9F1DD1FEB600811FC7 /* GPUImageSphereRefractionFilter.m */,
-				84358FA01DD1FEB600811FC7 /* GPUImageStillCamera.h */,
-				84358FA11DD1FEB600811FC7 /* GPUImageStillCamera.m */,
 				84358FA21DD1FEB600811FC7 /* GPUImageStretchDistortionFilter.h */,
 				84358FA31DD1FEB600811FC7 /* GPUImageStretchDistortionFilter.m */,
 				84358FA41DD1FEB600811FC7 /* GPUImageSubtractBlendFilter.h */,
