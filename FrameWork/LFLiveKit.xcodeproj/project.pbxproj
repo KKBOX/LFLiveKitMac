@@ -658,6 +658,8 @@
 		D41BA8CB1F2ECFD0006AF0AB /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8B11F2ECFD0006AF0AB /* GPUImageView.m */; };
 		D4781FEE1F39B2D900BCF768 /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8B5A41D768B6E00752B56 /* LFGPUImageEmptyFilter.m */; };
 		D4781FEF1F39B2D900BCF768 /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8B5A41D768B6E00752B56 /* LFGPUImageEmptyFilter.m */; };
+		D4DC8C021F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84358EE91DD1FEB500811FC7 /* GPUImageFilterPipeline.m */; };
+		D4DC8C031F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84358EE91DD1FEB500811FC7 /* GPUImageFilterPipeline.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2215,6 +2217,7 @@
 				8435920D1DD20A7F00811FC7 /* GPUImageVignetteFilter.m in Sources */,
 				8435920E1DD20A7F00811FC7 /* GPUImageVoronoiConsumerFilter.m in Sources */,
 				8435920F1DD20A7F00811FC7 /* GPUImageWeakPixelInclusionFilter.m in Sources */,
+				D4DC8C031F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */,
 				843592101DD20A7F00811FC7 /* GPUImageWhiteBalanceFilter.m in Sources */,
 				843592111DD20A7F00811FC7 /* GPUImageXYDerivativeFilter.m in Sources */,
 				843592121DD20A7F00811FC7 /* GPUImageZoomBlurFilter.m in Sources */,
@@ -2418,6 +2421,7 @@
 				84D8B5BC1D768B6E00752B56 /* LFAudioCapture.m in Sources */,
 				843590741DD1FEB600811FC7 /* GPUImageHighlightShadowTintFilter.m in Sources */,
 				8435913E1DD1FEB600811FC7 /* GPUImageWhiteBalanceFilter.m in Sources */,
+				D4DC8C021F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */,
 				843590501DD1FEB600811FC7 /* GPUImageFASTCornerDetectionFilter.m in Sources */,
 				843590721DD1FEB600811FC7 /* GPUImageHighlightShadowFilter.m in Sources */,
 				843591341DD1FEB600811FC7 /* GPUImageUnsharpMaskFilter.m in Sources */,

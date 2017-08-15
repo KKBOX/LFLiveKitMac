@@ -2,15 +2,15 @@
 
 NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
 (varying
-		vec2 textureCoordinate;
+	vec2 textureCoordinate;
 
-		uniform
-		sampler2D inputImageTexture;
+	uniform
+	sampler2D inputImageTexture;
 
-		void main() {
-			vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
-			gl_FragColor = vec4((textureColor.rgb), textureColor.w);
-		}
+	void main() {
+		vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+		gl_FragColor = vec4((textureColor.rgb), textureColor.w);
+	}
 );
 
 @implementation LFGPUImageEmptyFilter
@@ -25,4 +25,3 @@ NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
 }
 
 @end
-

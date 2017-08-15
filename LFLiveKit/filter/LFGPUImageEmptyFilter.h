@@ -7,7 +7,5 @@
 #endif
 
 @interface LFGPUImageEmptyFilter : GPUImageFilter
-{
-}
 
 @end
