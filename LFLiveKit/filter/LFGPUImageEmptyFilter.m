@@ -1,6 +1,6 @@
 #import "LFGPUImageEmptyFilter.h"
 
-NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
+static NSString *const kGPUImageInvertFragmentShaderString = SHADER_STRING
 (varying
 	vec2 textureCoordinate;
 
