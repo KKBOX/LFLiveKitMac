@@ -149,8 +149,8 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &propertySize);
 	assert(noErr == status);
 
-	int m_valueCount = propertySize / sizeof(AudioValueRange);
-	if (m_valueCount == 0) {
+	int valueCount = propertySize / sizeof(AudioValueRange);
+	if (valueCount == 0) {
 		return;
 	}
 	AudioValueRange *availableSampleRates = (AudioValueRange *)(malloc(propertySize));
