@@ -28,14 +28,14 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 		_configuration = configuration;
 		self.isRunning = NO;
 		self.taskQueue = dispatch_queue_create("com.youku.Laifeng.audioCapture.Queue", NULL);
-		AudioComponentDescription acd;
-		acd.componentType = kAudioUnitType_Output;
-		acd.componentSubType = kAudioUnitSubType_HALOutput;
-		acd.componentManufacturer = kAudioUnitManufacturer_Apple;
-		acd.componentFlags = 0;
-		acd.componentFlagsMask = 0;
+		AudioComponentDescription audioComponentDescription;
+		audioComponentDescription.componentType = kAudioUnitType_Output;
+		audioComponentDescription.componentSubType = kAudioUnitSubType_HALOutput;
+		audioComponentDescription.componentManufacturer = 0;
+		audioComponentDescription.componentFlags = 0;
+		audioComponentDescription.componentFlagsMask = 0;
 
-		self.component = AudioComponentFindNext(NULL, &acd);
+		self.component = AudioComponentFindNext(NULL, &audioComponentDescription);
 
 		if (self.component == NULL) {
 			NSAssert(0, @"Unable to find audio component.");
@@ -60,25 +60,15 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 			UInt32 size = sizeof(AudioDeviceID);
 			status = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &size, &inputDevice);
 			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &inputDevice, sizeof(inputDevice));
+			[self updateFormatForDevice:inputDevice];
 		}
 		else {
 			[self setAudioCaptureDevice:device];
 		}
 
-		AudioStreamBasicDescription desc = {0};
-		desc.mSampleRate = _configuration.audioSampleRate;
-		desc.mFormatID = kAudioFormatLinearPCM;
-		desc.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
-		desc.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;
-		desc.mFramesPerPacket = 1;
-		desc.mBitsPerChannel = 16;
-		desc.mBytesPerFrame = desc.mBitsPerChannel / 8 * desc.mChannelsPerFrame;
-		desc.mBytesPerPacket = desc.mBytesPerFrame * desc.mFramesPerPacket;
-
 		AURenderCallbackStruct cb;
 		cb.inputProcRefCon = (__bridge void *)(self);
 		cb.inputProc = handleInputBuffer;
-		AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &desc, sizeof(desc));
 		AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 1, &cb, sizeof(cb));
 
 		status = AudioUnitInitialize(self.componetInstance);
@@ -97,9 +87,9 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	}
 
 	AudioObjectPropertyAddress propertyAddress = {
-			kAudioHardwarePropertyDevices,
-			kAudioObjectPropertyScopeGlobal,
-			kAudioObjectPropertyElementMaster
+		kAudioHardwarePropertyDevices,
+		kAudioObjectPropertyScopeGlobal,
+		kAudioObjectPropertyElementMaster
 	};
 
 	UInt32 dataSize = 0;
@@ -121,7 +111,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	if (kAudioHardwareNoError != status) {
 		fprintf(stderr, "AudioObjectGetPropertyData (kAudioHardwarePropertyDevices) failed: %i\n", status);
 		free(audioDevices), audioDevices = NULL;
-		return ;
+		return;
 	}
 
 	// Iterate through all the devices and determine which are input-capable
@@ -139,11 +129,55 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 		if ([(__bridge NSString *)deviceUID isEqualToString:device.uniqueID]) {
 			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &audioDevices[i], sizeof(audioDevices[i]));
+			[self updateFormatForDevice:audioDevices[i]];
 			break;
 		}
 	}
 
-	free(audioDevices), audioDevices = NULL;
+	free(audioDevices);
+	audioDevices = NULL;
+}
+
+- (void)updateFormatForDevice:(AudioDeviceID)device
+{
+	// https://stackoverflow.com/questions/18127114/setting-sample-rate-on-auhal
+	AudioObjectPropertyAddress propertyAddress;
+	propertyAddress.mSelector = kAudioDevicePropertyAvailableNominalSampleRates;
+
+	UInt32 propertySize = 0;
+	OSStatus status = noErr;
+	status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &propertySize);
+	assert(noErr == status);
+
+	int m_valueCount = propertySize / sizeof(AudioValueRange);
+	if (m_valueCount == 0) {
+		return;
+	}
+	AudioValueRange *availableSampleRates = (AudioValueRange *)(malloc(propertySize));
+
+	status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &propertySize, availableSampleRates);
+	assert(noErr == status);
+
+	AudioValueRange inputSampleRate = availableSampleRates[0];
+
+	propertyAddress.mSelector = kAudioDevicePropertyNominalSampleRate;
+	status = AudioObjectSetPropertyData(device, &propertyAddress, 0, NULL, sizeof(inputSampleRate), &inputSampleRate);
+	assert(noErr == status);
+
+	AudioStreamBasicDescription streamFormatDescription = {0};
+	streamFormatDescription.mSampleRate = inputSampleRate.mMinimum;
+	streamFormatDescription.mFormatID = kAudioFormatLinearPCM;
+	streamFormatDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
+
+	streamFormatDescription.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;
+	streamFormatDescription.mFramesPerPacket = 1;
+	streamFormatDescription.mBitsPerChannel = 16;
+	streamFormatDescription.mBytesPerFrame = streamFormatDescription.mBitsPerChannel / 8 * streamFormatDescription.mChannelsPerFrame;
+	streamFormatDescription.mBytesPerPacket = streamFormatDescription.mBytesPerFrame * streamFormatDescription.mFramesPerPacket;
+	streamFormatDescription.mReserved = 0;
+	AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &streamFormatDescription, sizeof(streamFormatDescription));
+
+	free(availableSampleRates);
 }
 
 - (void)dealloc
