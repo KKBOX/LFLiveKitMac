@@ -160,7 +160,11 @@
 - (void)setAudioDevice:(AVCaptureDevice *)audioDevice
 {
 	_audioDevice = audioDevice;
-	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice];
+	Float64 sampleRate = 44100;
+	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice sampleRate:&sampleRate];
+	self.audioConfiguration.audioSampleRate = sampleRate;
+	_audioEncoder = nil;
+	[self audioEncoder];
 }
 
 - (void)setVideoDevice:(AVCaptureDevice *)videoDevice
@@ -364,8 +368,11 @@
 {
 	if (!_audioCaptureSource) {
 		if (self.captureType & LFLiveCaptureMaskAudio) {
-			_audioCaptureSource = [[LFAudioCapture alloc] initWithAudioConfiguration:_audioConfiguration audioCaptureDevice:_audioDevice];
+			Float64 sampleRate = 44100;
+			_audioCaptureSource = [[LFAudioCapture alloc] initWithAudioConfiguration:_audioConfiguration audioCaptureDevice:_audioDevice sampleRate:&sampleRate];
 			_audioCaptureSource.delegate = self;
+			self.audioConfiguration.audioSampleRate = sampleRate;
+			self.audioEncoder = nil;
 		}
 	}
 	return _audioCaptureSource;

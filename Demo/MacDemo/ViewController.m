@@ -173,7 +173,6 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 	if (!_session) {
 		LFLiveAudioConfiguration *audioConfig = [LFLiveAudioConfiguration defaultConfiguration];
 		LFLiveVideoConfiguration *videoConfig = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High1];
-//		videoConfig.videoSize = CGSizeMake(640, 640);
 		AVCaptureDevice *audioDevice = [LFLiveSession availableAudioDevices][self.audioDevicesPopUpButton.indexOfSelectedItem];
 		AVCaptureDevice *videoDevice = [LFLiveSession availableCameraDevices][self.videoDevicesPopUpButton.indexOfSelectedItem];
 		LFLiveCaptureTypeMask type = self.broadcastOptionPopUpButton.indexOfSelectedItem == 0 ? LFLiveCaptureMaskAll : LFLiveCaptureMaskAudio;

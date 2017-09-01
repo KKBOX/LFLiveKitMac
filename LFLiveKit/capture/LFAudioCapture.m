@@ -22,7 +22,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 #pragma mark -- LiftCycle
 
-- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device
+- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate
 {
 	if (self = [super init]) {
 		_configuration = configuration;
@@ -60,10 +60,10 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 			UInt32 size = sizeof(AudioDeviceID);
 			status = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &size, &inputDevice);
 			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &inputDevice, sizeof(inputDevice));
-			[self updateFormatForDevice:inputDevice];
+			[self updateFormatForDevice:inputDevice sampleRate:outSampleRate];
 		}
 		else {
-			[self setAudioCaptureDevice:device];
+			[self setAudioCaptureDevice:device sampleRate:outSampleRate];
 		}
 
 		AURenderCallbackStruct cb;
@@ -80,7 +80,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	return self;
 }
 
-- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device
+- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate
 {
 	if (![device hasMediaType:AVMediaTypeAudio]) {
 		return;
@@ -129,7 +129,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 		if ([(__bridge NSString *)deviceUID isEqualToString:device.uniqueID]) {
 			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &audioDevices[i], sizeof(audioDevices[i]));
-			[self updateFormatForDevice:audioDevices[i]];
+			[self updateFormatForDevice:audioDevices[i] sampleRate:outSampleRate];
 			break;
 		}
 	}
@@ -138,7 +138,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	audioDevices = NULL;
 }
 
-- (void)updateFormatForDevice:(AudioDeviceID)device
+- (void)updateFormatForDevice:(AudioDeviceID)device sampleRate:(Float64 *)outSampleRate
 {
 	// https://stackoverflow.com/questions/18127114/setting-sample-rate-on-auhal
 	AudioObjectPropertyAddress propertyAddress;
@@ -160,9 +160,22 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 	AudioValueRange inputSampleRate = availableSampleRates[0];
 
+	for (int index = 0; index < valueCount; index++) {
+		AudioValueRange aSampleRate = availableSampleRates[index];
+		if (aSampleRate.mMinimum >= 44100) {
+			inputSampleRate = aSampleRate;
+			break;
+		}
+		if (aSampleRate.mMinimum > inputSampleRate.mMinimum) {
+			inputSampleRate = aSampleRate;
+		}
+	}
+
 	propertyAddress.mSelector = kAudioDevicePropertyNominalSampleRate;
 	status = AudioObjectSetPropertyData(device, &propertyAddress, 0, NULL, sizeof(inputSampleRate), &inputSampleRate);
 	assert(noErr == status);
+
+	*outSampleRate = inputSampleRate.mMinimum;
 
 	AudioStreamBasicDescription streamFormatDescription = {0};
 	streamFormatDescription.mSampleRate = inputSampleRate.mMinimum;

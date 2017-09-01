@@ -43,8 +43,8 @@ extern NSString *_Nullable const LFAudioComponentFailedToCreateNotification;
 - (nullable instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (nullable instancetype)new UNAVAILABLE_ATTRIBUTE;
 
-- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device sampleRate:(nonnull Float64 *)outSampleRate NS_DESIGNATED_INITIALIZER;
 
-- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device;
+- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device sampleRate:(nonnull Float64 *)outSampleRate;
 
 @end

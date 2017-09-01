@@ -49,6 +49,7 @@
 
 - (void)dealloc
 {
+	[self releaseConverter];
 	if (aacBuf) {
 		free(aacBuf);
 	}
@@ -173,6 +174,10 @@
 	outputFormat.mFormatID = kAudioFormatMPEG4AAC;            // AAC编码 kAudioFormatMPEG4AAC kAudioFormatMPEG4AAC_HE_V2
 	outputFormat.mChannelsPerFrame = (UInt32) _configuration.numberOfChannels;;
 	outputFormat.mFramesPerPacket = 1024;                     // AAC一帧是1024个字节
+	outputFormat.mBitsPerChannel = 0;
+	outputFormat.mBytesPerFrame = 0;
+	outputFormat.mBytesPerPacket = 0;
+	outputFormat.mFormatFlags = kMPEG4Object_AAC_Main;
 
 //kExtAudioFileProperty_CodecManufacturer
 
@@ -204,6 +209,11 @@
 	return YES;
 }
 
+- (void)releaseConverter
+{
+	AudioConverterDispose(m_converter);
+	m_converter = NULL;
+}
 
 #pragma mark -- AudioCallBack
 
