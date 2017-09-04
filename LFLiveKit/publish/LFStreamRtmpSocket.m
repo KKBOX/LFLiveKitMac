@@ -320,23 +320,27 @@ Failed:
     enc = AMF_EncodeNamedNumber(enc, pend, &av_duration, 0.0);
     enc = AMF_EncodeNamedNumber(enc, pend, &av_fileSize, 0.0);
 
-    // videosize
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_width, _stream.videoConfiguration.videoSize.width);
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_height, _stream.videoConfiguration.videoSize.height);
+	if (_stream.videoConfiguration) {
+		// videosize
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_width, _stream.videoConfiguration.videoSize.width);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_height, _stream.videoConfiguration.videoSize.height);
 
-    // video
-    enc = AMF_EncodeNamedString(enc, pend, &av_videocodecid, &av_avc1);
+		// video
+		enc = AMF_EncodeNamedString(enc, pend, &av_videocodecid, &av_avc1);
 
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_videodatarate, _stream.videoConfiguration.videoBitRate / 1000.f);
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_framerate, _stream.videoConfiguration.videoFrameRate);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_videodatarate, _stream.videoConfiguration.videoBitRate / 1000.f);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_framerate, _stream.videoConfiguration.videoFrameRate);
+	}
 
-    // audio
-    enc = AMF_EncodeNamedString(enc, pend, &av_audiocodecid, &av_mp4a);
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_audiodatarate, _stream.audioConfiguration.audioBitrate);
+	if (_stream.audioConfiguration) {
+		// audio
+		enc = AMF_EncodeNamedString(enc, pend, &av_audiocodecid, &av_mp4a);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_audiodatarate, _stream.audioConfiguration.audioBitrate);
 
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_audiosamplerate, _stream.audioConfiguration.audioSampleRate);
-    enc = AMF_EncodeNamedNumber(enc, pend, &av_audiosamplesize, 16.0);
-    enc = AMF_EncodeNamedBoolean(enc, pend, &av_stereo, _stream.audioConfiguration.numberOfChannels == 2);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_audiosamplerate, _stream.audioConfiguration.audioSampleRate);
+		enc = AMF_EncodeNamedNumber(enc, pend, &av_audiosamplesize, 16.0);
+		enc = AMF_EncodeNamedBoolean(enc, pend, &av_stereo, _stream.audioConfiguration.numberOfChannels == 2);
+	}
 
     // sdk version
     enc = AMF_EncodeNamedString(enc, pend, &av_encoder, &av_SDKVersion);

@@ -10,8 +10,6 @@
 #import "LFLiveAudioConfiguration.h"
 #import "LFLiveVideoConfiguration.h"
 
-
-
 /// 流状态
 typedef NS_ENUM (NSUInteger, LFLiveState){
     /// 准备

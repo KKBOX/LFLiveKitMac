@@ -127,8 +127,12 @@
 		return;
 	}
 	_streamInfo = streamInfo;
-	_streamInfo.videoConfiguration = _videoConfiguration;
-	_streamInfo.audioConfiguration = _audioConfiguration;
+	if (_captureType & LFLiveCaptureMaskVideo || _captureType & LFLiveInputMaskVideo) {
+		_streamInfo.videoConfiguration = _videoConfiguration;
+	}
+	if (_captureType & LFLiveCaptureMaskAudio || _captureType & LFLiveInputMaskAudio) {
+		_streamInfo.audioConfiguration = _audioConfiguration;
+	}
 	[self.socket start];
 }
 
