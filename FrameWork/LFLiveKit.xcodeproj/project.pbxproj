@@ -652,6 +652,7 @@
 		D41BA8CB1F2ECFD0006AF0AB /* GPUImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8B11F2ECFD0006AF0AB /* GPUImageView.m */; };
 		D4781FEE1F39B2D900BCF768 /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8B5A41D768B6E00752B56 /* LFGPUImageEmptyFilter.m */; };
 		D4781FEF1F39B2D900BCF768 /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8B5A41D768B6E00752B56 /* LFGPUImageEmptyFilter.m */; };
+		D4B68B941F860973001A257B /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4B68B931F860972001A257B /* AudioUnit.framework */; };
 		D4DC8C021F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84358EE91DD1FEB500811FC7 /* GPUImageFilterPipeline.m */; };
 		D4DC8C031F435E7D008FCF36 /* GPUImageFilterPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 84358EE91DD1FEB500811FC7 /* GPUImageFilterPipeline.m */; };
 /* End PBXBuildFile section */
@@ -1082,6 +1083,7 @@
 		D41BA8AF1F2ECFD0006AF0AB /* GPUImagePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImagePicture.m; sourceTree = "<group>"; };
 		D41BA8B01F2ECFD0006AF0AB /* GPUImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPUImageView.h; sourceTree = "<group>"; };
 		D41BA8B11F2ECFD0006AF0AB /* GPUImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPUImageView.m; sourceTree = "<group>"; };
+		D4B68B931F860972001A257B /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1096,6 +1098,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4B68B941F860973001A257B /* AudioUnit.framework in Frameworks */,
 				84D8B4C51D757EC800752B56 /* Foundation.framework in Frameworks */,
 				84D8B4C31D757EC400752B56 /* AVFoundation.framework in Frameworks */,
 				84D8B4C11D757EBE00752B56 /* AudioToolbox.framework in Frameworks */,
@@ -1627,6 +1630,7 @@
 		9ABACAFFC334034AA0115426 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D4B68B931F860972001A257B /* AudioUnit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

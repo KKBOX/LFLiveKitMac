@@ -507,6 +507,12 @@ Failed:
     });
 }
 
+- (void)_delayedReconnect {
+    dispatch_async(self.rtmpSendQueue, ^{
+        [self _reconnect];
+    });
+}
+
 - (void)_reconnect{
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 

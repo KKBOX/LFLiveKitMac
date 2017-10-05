@@ -7,6 +7,7 @@
 //
 
 #import "LFAudioCapture.h"
+@import AudioToolbox;
 
 NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentFailedToCreateNotification";
 
