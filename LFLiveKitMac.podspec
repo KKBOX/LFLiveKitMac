@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "LFLiveKitMac"
-  s.version      = "0.2.6"
+  s.version      = "0.2.7"
   s.summary      = "LFLiveKit macOS port. Based on LFLiveKit for iOS 2.6."
   s.homepage     = "https://github.com/KKBOX/LFLiveKitMac"
   s.license      = { :type => "MIT", :file => "LICENSE" }
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.public_header_files = ['LFLiveKit/*.h', 'LFLiveKit/objects/*.h', 'LFLiveKit/configuration/*.h']
   # s.header_dir = './'
 
-  s.frameworks = "VideoToolbox", "AudioToolbox","AVFoundation","Foundation","Cocoa"
+  s.frameworks = "VideoToolbox", "AudioToolbox", "AVFoundation", "AudioUnit", "Foundation", "Cocoa"
   s.libraries = "c++", "z"
   s.requires_arc = true
 end
