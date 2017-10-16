@@ -62,6 +62,7 @@
 		D41BA8F01F2F46DF006AF0AB /* MacDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacDemoTests.m; sourceTree = "<group>"; };
 		D41BA8F21F2F46DF006AF0AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D41BA8FB1F2F4771006AF0AB /* LFLiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LFLiveKit.xcodeproj; path = ../FrameWork/LFLiveKit.xcodeproj; sourceTree = "<group>"; };
+		D434CD371F5EDD4000C37D62 /* MacDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacDemo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +115,7 @@
 		D41BA8D81F2F46DF006AF0AB /* MacDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D434CD371F5EDD4000C37D62 /* MacDemo.entitlements */,
 				D41BA8D91F2F46DF006AF0AB /* AppDelegate.h */,
 				D41BA8DA1F2F46DF006AF0AB /* AppDelegate.m */,
 				D41BA8DF1F2F46DF006AF0AB /* ViewController.h */,
@@ -204,6 +206,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = GA2DMW4FFR;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					D41BA8EB1F2F46DF006AF0AB = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -413,14 +420,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MacDemo/MacDemo.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = GA2DMW4FFR;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "../LFLiveKit/**";
 				INFOPLIST_FILE = MacDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kkbox.MacDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -428,14 +438,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MacDemo/MacDemo.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = GA2DMW4FFR;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "../LFLiveKit/**";
 				INFOPLIST_FILE = MacDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kkbox.MacDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

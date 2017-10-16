@@ -197,6 +197,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.delegate = nil;
 
 	dispatch_sync(self.taskQueue, ^{
 		if (self.componetInstance) {
