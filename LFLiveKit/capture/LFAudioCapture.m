@@ -60,8 +60,12 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 			AudioDeviceID inputDevice;
 			UInt32 size = sizeof(AudioDeviceID);
 			status = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &size, &inputDevice);
-			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &inputDevice, sizeof(inputDevice));
-			[self updateFormatForDevice:inputDevice sampleRate:outSampleRate];
+			if (status == noErr) {
+				status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &inputDevice, sizeof(inputDevice));
+				if (status == noErr) {
+					[self updateFormatForDevice:inputDevice sampleRate:outSampleRate];
+				}
+			}
 		}
 		else {
 			[self setAudioCaptureDevice:device sampleRate:outSampleRate];
@@ -148,7 +152,9 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	UInt32 propertySize = 0;
 	OSStatus status = noErr;
 	status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &propertySize);
-	assert(noErr == status);
+	if (noErr != status) {
+		return;
+	}
 
 	int valueCount = propertySize / sizeof(AudioValueRange);
 	if (valueCount == 0) {
@@ -157,7 +163,9 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	AudioValueRange *availableSampleRates = (AudioValueRange *)(malloc(propertySize));
 
 	status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &propertySize, availableSampleRates);
-	assert(noErr == status);
+	if (noErr != status) {
+		return;
+	}
 
 	AudioValueRange inputSampleRate = availableSampleRates[0];
 
@@ -174,7 +182,9 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 	propertyAddress.mSelector = kAudioDevicePropertyNominalSampleRate;
 	status = AudioObjectSetPropertyData(device, &propertyAddress, 0, NULL, sizeof(inputSampleRate), &inputSampleRate);
-	assert(noErr == status);
+	if (noErr != status) {
+		return;
+	}
 
 	*outSampleRate = inputSampleRate.mMinimum;
 
