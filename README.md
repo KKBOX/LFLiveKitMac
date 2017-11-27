@@ -29,12 +29,14 @@ is required.
 
 You may have code like this:
 
-	LFLiveAudioConfiguration *audioConfig = [LFLiveAudioConfiguration defaultConfiguration];
-	LFLiveVideoConfiguration *videoConfig = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium3];
-	AVCaptureDevice *audioDevice = [LFLiveSession availableAudioDevices][0];
-	AVCaptureDevice *videoDevice = [LFLiveSession availableCameraDevices][0];
-	_session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig audioDevice:audioDevice videoConfiguration:videoConfig videoDevice:videoDevice captureType:LFLiveCaptureMaskAll];
-	_session.delegate = self;
+``` objective-c
+LFLiveAudioConfiguration *audioConfig = [LFLiveAudioConfiguration defaultConfiguration];
+LFLiveVideoConfiguration *videoConfig = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium3];
+AVCaptureDevice *audioDevice = [LFLiveSession availableAudioDevices][0];
+AVCaptureDevice *videoDevice = [LFLiveSession availableCameraDevices][0];
+_session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig audioDevice:audioDevice videoConfiguration:videoConfig videoDevice:videoDevice captureType:LFLiveCaptureMaskAll];
+_session.delegate = self;
+```
 
 ## Modification from the Original LFLiveKit
 
