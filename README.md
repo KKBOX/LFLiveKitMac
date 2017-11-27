@@ -50,7 +50,7 @@ to make it able to build and run on macOS. What we did are including
   read proccessed textures and write them into CVPixelBufferRef
   objects. However, the cache does not exist on macOS. We have to use
   another way to create CVPixelBufferRef obejcts.
-* LFHardwareAudioEncoder does not work on macOS, we always use
+* LFHardwareAudioEncoder does not work on macOS, so we always use
   LFH264VideoEncoder.
 * Some video filters are removes temporarily in order to make the
   project simpler while doing porting.
@@ -60,4 +60,5 @@ to make it able to build and run on macOS. What we did are including
 Enjoy!
 
 ## License
- **LFLiveKit is released under the MIT license. See LICENSE for details.**
+ **LFLiveKit is released under the MIT license. See 
+ [LICENSE](https://github.com/KKBOX/LFLiveKitMac/blob/master/LICENSE) for details.**
