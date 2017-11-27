@@ -10,13 +10,13 @@ Porting LFLiveKit to macOS
 ![Platform](https://img.shields.io/badge/platform-macOS-ff69b4.svg)&nbsp;
 
 
-[LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit) is a opensource
+[LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit) is an opensource
 RTMP streaming SDK for iOS, and the project ports LFLiveKit to macOS.
 It helps you to broadcast RTMP streams in your macOS apps.
 
 ## Requirements
 
-Currently it is only tested on macOS 10.12 and Xcode 8.3. However, it
+Currently it is only tested on macOS 10.12 and Xcode 8.3. However, but it
 should support Xcode 7 and macOS 10.8 and above.
 
 ## Usage
