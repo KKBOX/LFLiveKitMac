@@ -2,6 +2,7 @@
 @import AVFoundation;
 #import <LFLiveKit.h>
 #import "ViewController.h"
+#import "VolumeView.h"
 
 @interface PreviewView: NSView
 @end
@@ -25,7 +26,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 	ViewControllerStateError
 };
 
-@interface ViewController () <LFLiveSessionDelegate>
+@interface ViewController () <LFLiveSessionDelegate, LFLiveSessionRecordingDelegate>
 {
 	LFLiveSession *_session;
 }
@@ -39,6 +40,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 @property (weak) IBOutlet NSTextField *rtmpURLTextField;
 @property (weak) IBOutlet NSPopUpButton *broadcastOptionPopUpButton;
 @property (weak) IBOutlet NSView *preview;
+@property (weak) IBOutlet VolumeView *volumeView;
 
 @property (assign, nonatomic) ViewControllerState state;
 
@@ -58,6 +60,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.volumeView stoptTimer];
 }
 
 - (void)viewDidLoad
@@ -81,6 +84,8 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 	}
 	self.rtmpURLTextField.stringValue = rtmpURL;
 	self.state = ViewControllerStateNotConnected;
+	self.volumeView.delegate = self;
+	[self.volumeView startTimer];
 }
 
 - (void)_updateAudioDevices
@@ -277,6 +282,16 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 {
 	NSLog(@"%s %lu", __PRETTY_FUNCTION__, (unsigned long)errorCode);
 	self.state = ViewControllerStateError;
+}
+
+- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data
+{
+	self.currentAudioData = data;
+}
+
+- (nullable NSData *)volumeViewRequestAudioData:(nonnull VolumeView *)view
+{
+	return self.currentAudioData;
 }
 
 @end

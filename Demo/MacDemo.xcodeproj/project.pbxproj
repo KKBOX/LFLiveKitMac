@@ -14,6 +14,7 @@
 		D41BA8E61F2F46DF006AF0AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41BA8E41F2F46DF006AF0AB /* Main.storyboard */; };
 		D41BA8F11F2F46DF006AF0AB /* MacDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8F01F2F46DF006AF0AB /* MacDemoTests.m */; };
 		D41BA9071F2F4786006AF0AB /* LFLiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D41BA9021F2F4772006AF0AB /* LFLiveKit.framework */; };
+		D4D3F8911FCEC73B0078E6B0 /* VolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D3F8901FCEC73B0078E6B0 /* VolumeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		D41BA8F21F2F46DF006AF0AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D41BA8FB1F2F4771006AF0AB /* LFLiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LFLiveKit.xcodeproj; path = ../FrameWork/LFLiveKit.xcodeproj; sourceTree = "<group>"; };
 		D434CD371F5EDD4000C37D62 /* MacDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacDemo.entitlements; sourceTree = "<group>"; };
+		D4D3F88F1FCEC73B0078E6B0 /* VolumeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VolumeView.h; sourceTree = "<group>"; };
+		D4D3F8901FCEC73B0078E6B0 /* VolumeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VolumeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 				D41BA8DA1F2F46DF006AF0AB /* AppDelegate.m */,
 				D41BA8DF1F2F46DF006AF0AB /* ViewController.h */,
 				D41BA8E01F2F46DF006AF0AB /* ViewController.m */,
+				D4D3F88F1FCEC73B0078E6B0 /* VolumeView.h */,
+				D4D3F8901FCEC73B0078E6B0 /* VolumeView.m */,
 				D41BA8E21F2F46DF006AF0AB /* Assets.xcassets */,
 				D41BA8E41F2F46DF006AF0AB /* Main.storyboard */,
 				D41BA8E71F2F46DF006AF0AB /* Info.plist */,
@@ -288,6 +293,7 @@
 			files = (
 				D41BA8E11F2F46DF006AF0AB /* ViewController.m in Sources */,
 				D41BA8DE1F2F46DF006AF0AB /* main.m in Sources */,
+				D4D3F8911FCEC73B0078E6B0 /* VolumeView.m in Sources */,
 				D41BA8DB1F2F46DF006AF0AB /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
