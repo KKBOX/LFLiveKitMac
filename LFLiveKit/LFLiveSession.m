@@ -195,6 +195,9 @@
 	if (self.uploading) {
 		[self.audioEncoder encodeAudioData:audioData timeStamp:NOW];
 	}
+	if (self.recordingDelegate) {
+		[self.recordingDelegate liveSession:self didReceiveAudioData:audioData];
+	}
 }
 
 - (void)captureOutput:(nullable LFVideoCapture *)capture pixelBuffer:(nullable CVPixelBufferRef)pixelBuffer

@@ -45,6 +45,8 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 @property (strong) AVCaptureDevice *currentAudioDevice;
 @property (strong) AVCaptureDevice *currentVideoDevice;
 
+@property (strong) NSData *currentAudioData;
+
 - (IBAction)setAudioDevice:(id)sender;
 - (IBAction)setVideoDevice:(id)sender;
 - (IBAction)startLive:(id)sender;
@@ -179,6 +181,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 
 		_session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig audioDevice:audioDevice videoConfiguration:videoConfig videoDevice:videoDevice captureType:type];
 		_session.delegate = self;
+		_session.recordingDelegate = self;
 	}
 	return _session;
 }

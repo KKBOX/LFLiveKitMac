@@ -61,6 +61,10 @@ typedef NS_ENUM(NSInteger, LFLiveCaptureTypeMask)
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode;
 @end
 
+@protocol LFLiveSessionRecordingDelegate <NSObject>
+- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data;
+@end
+
 @class LFLiveStreamInfo;
 
 @interface LFLiveSession : NSObject
@@ -74,6 +78,7 @@ typedef NS_ENUM(NSInteger, LFLiveCaptureTypeMask)
 ///=============================================================================
 /** The delegate of the capture. captureData callback */
 @property (nullable, nonatomic, weak) id <LFLiveSessionDelegate> delegate;
+@property (nullable, nonatomic, weak) id <LFLiveSessionRecordingDelegate> recordingDelegate;
 
 /** The running control start capture or stop capture*/
 @property (nonatomic, assign) BOOL running;
