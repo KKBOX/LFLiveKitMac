@@ -74,27 +74,29 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 	const short *bytes = data.bytes;
 	for (size_t i = 0; i < sampleCount * 4; i += 4) {
 		short *sp = (short *)(bytes + i);
-		short left = *sp;
-		short right = *(sp + 1);
-		if (left < 0) {
-			left = left * -1;
-		}
-		if (right < 0) {
-			right = right * -1;
-		}
+		short left = abs(*sp);
+		short right = abs(*(sp + 1));
 		short average = (left + right) / 2;
 		sum += average / 32767.0;
 	}
 	float average = sum / (float)sampleCount;
-//	NSLog(@"average:%f", average);
-//	average = pow(10.0, average / 20.0);
-
+	average *= 5;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[CATransaction begin];
-		[CATransaction commit];
+		[CATransaction setAnimationDuration:0.05];
 		CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.barLayer.superlayer.frame) * average, CGRectGetHeight(self.barLayer.superlayer.frame));
 		self.barLayer.frame = frame;
+		if (average < 0.7) {
+			self.barLayer.backgroundColor = [NSColor greenColor].CGColor;
+		}
+		else if (average < 0.9) {
+			self.barLayer.backgroundColor = [NSColor yellowColor].CGColor;
+		}
+		else {
+			self.barLayer.backgroundColor = [NSColor redColor].CGColor;
+		}
+
 		[CATransaction commit];
 	});
 	return kCVReturnSuccess;
