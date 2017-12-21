@@ -10,7 +10,7 @@ Porting LFLiveKit to macOS
 ![Platform](https://img.shields.io/badge/platform-macOS-ff69b4.svg)&nbsp;
 
 
-[LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit) is an opensource
+[LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit) is an open source
 RTMP streaming SDK for iOS, and the project ports LFLiveKit to macOS.
 It helps you to broadcast RTMP streams in your macOS apps.
 
@@ -21,10 +21,10 @@ should support Xcode 7 and macOS 10.8 and above.
 
 ## Usage
 
-Uilike iOS, it is very possible that a mac user has a lot of external
+Unlike iOS, it is very possible that a mac user has a lot of external
 audio and video capture devices connected, such as USB microphones,
 webcams and so on. Thus, we change the interface for creating
-LFLiveSession obejcts, specifying a video device and an audio device
+LFLiveSession objects, specifying a video device and an audio device
 is required.
 
 You may have code like this:
