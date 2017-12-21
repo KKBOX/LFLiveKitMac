@@ -16,8 +16,12 @@ It helps you to broadcast RTMP streams in your macOS apps.
 
 ## Requirements
 
-Currently it is only tested on macOS 10.12 and Xcode 8.3. However, but it
-should support Xcode 7 and macOS 10.8 and above.
+Currently it is only tested on 
+
+- macOS 10.13 and Xcode 9.1 to 9.2.
+- macOS 10.12 and Xcode 8.3. 
+
+However, it should support Xcode 7 and macOS 10.8 and above.
 
 ## Usage
 
@@ -44,7 +48,7 @@ Since APIs differ between iOS and macOS, we need to modify LFLiveKit
 to make it able to build and run on macOS. What we did are including
 
 * Change all of the OpenES API calls to corresponding OpenGL ones.
-* Change the audio component for audio recoring. LFLiveKit uses the
+* Change the audio component for audio recording. LFLiveKit uses the
   remoteIO node on iOS, but we need to use kAudioUnitSubType_HALOutput
   on mac OS.
 * Change the way that GPUImageFramebuffer generates pixel
