@@ -1,0 +1,5 @@
+language: objective-c
+osx_image: xcode9.2
+script:
+  - xcodebuild -project FrameWork/LFLiveKit.xcodeproj -scheme LFLiveKit
+  - xcodebuild -project FrameWork/LFLiveKit.xcodeproj -scheme LFLiveKitFramework
