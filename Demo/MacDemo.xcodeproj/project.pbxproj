@@ -13,7 +13,8 @@
 		D41BA8E31F2F46DF006AF0AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41BA8E21F2F46DF006AF0AB /* Assets.xcassets */; };
 		D41BA8E61F2F46DF006AF0AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41BA8E41F2F46DF006AF0AB /* Main.storyboard */; };
 		D41BA8F11F2F46DF006AF0AB /* MacDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D41BA8F01F2F46DF006AF0AB /* MacDemoTests.m */; };
-		D41BA9071F2F4786006AF0AB /* LFLiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D41BA9021F2F4772006AF0AB /* LFLiveKit.framework */; };
+		D4A551A61FCFEAB800EBE0FD /* LFLiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D41BA9021F2F4772006AF0AB /* LFLiveKit.framework */; };
+		D4A551A71FCFEAB800EBE0FD /* LFLiveKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D41BA9021F2F4772006AF0AB /* LFLiveKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D4D3F8911FCEC73B0078E6B0 /* VolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D3F8901FCEC73B0078E6B0 /* VolumeView.m */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +40,14 @@
 			remoteGlobalIDString = 8495F66B1DB8F14600542124;
 			remoteInfo = LFLiveKitFramework;
 		};
-		D41BA9051F2F4779006AF0AB /* PBXContainerItemProxy */ = {
+		D4A5519E1FCFEA6E00EBE0FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41BA8FB1F2F4771006AF0AB /* LFLiveKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84D8B38F1D7574D600752B56;
+			remoteInfo = LFLiveKit;
+		};
+		D4A551A81FCFEAB800EBE0FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41BA8FB1F2F4771006AF0AB /* LFLiveKit.xcodeproj */;
 			proxyType = 1;
@@ -47,6 +55,20 @@
 			remoteInfo = LFLiveKit;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D4A551AA1FCFEAB900EBE0FD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D4A551A71FCFEAB800EBE0FD /* LFLiveKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D41B867C1F3D585000224237 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -73,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D41BA9071F2F4786006AF0AB /* LFLiveKit.framework in Frameworks */,
+				D4A551A61FCFEAB800EBE0FD /* LFLiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,11 +191,13 @@
 				D41BA8D21F2F46DF006AF0AB /* Sources */,
 				D41BA8D31F2F46DF006AF0AB /* Frameworks */,
 				D41BA8D41F2F46DF006AF0AB /* Resources */,
+				D4A551AA1FCFEAB900EBE0FD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D41BA9061F2F4779006AF0AB /* PBXTargetDependency */,
+				D4A5519F1FCFEA6E00EBE0FD /* PBXTargetDependency */,
+				D4A551A91FCFEAB800EBE0FD /* PBXTargetDependency */,
 			);
 			name = MacDemo;
 			productName = MacDemo;
@@ -314,10 +338,15 @@
 			target = D41BA8D51F2F46DF006AF0AB /* MacDemo */;
 			targetProxy = D41BA8ED1F2F46DF006AF0AB /* PBXContainerItemProxy */;
 		};
-		D41BA9061F2F4779006AF0AB /* PBXTargetDependency */ = {
+		D4A5519F1FCFEA6E00EBE0FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LFLiveKit;
-			targetProxy = D41BA9051F2F4779006AF0AB /* PBXContainerItemProxy */;
+			targetProxy = D4A5519E1FCFEA6E00EBE0FD /* PBXContainerItemProxy */;
+		};
+		D4A551A91FCFEAB800EBE0FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LFLiveKit;
+			targetProxy = D4A551A81FCFEAB800EBE0FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
