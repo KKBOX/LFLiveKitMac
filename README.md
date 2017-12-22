@@ -4,6 +4,7 @@ Porting LFLiveKit to macOS
 
 ---
 
+[![build](https://api.travis-ci.org/KKBOX/LFLiveKitMac.svg)](https://travis-ci.org/KKBOX/LFLiveKitMac)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/KKBOX/LFLiveKitMac/blob/master/LICENSE)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/v/LFLiveKitMac.svg?style=flat)](http://cocoapods.org/?q=LFLiveKitMac)&nbsp;
 [![Support](https://img.shields.io/badge/macOS-10.8-orange.svg)](https://www.apple.com/tw/macos)&nbsp;
