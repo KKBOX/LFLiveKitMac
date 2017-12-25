@@ -19,6 +19,7 @@
 }
 @property (nonatomic, strong) LFLiveAudioConfiguration *configuration;
 @property (nonatomic, weak) id <LFAudioEncodingDelegate> aacDeleage;
+@property (nonatomic, strong) NSMutableData *silentAudioData;
 
 @end
 
@@ -60,6 +61,21 @@
 
 #pragma mark -- LFAudioEncoder
 
+- (NSData *)silentAudioDataWithLength:(NSUInteger)length
+{
+	if (length == _silentAudioData.length && !_silentAudioData) {
+		return _silentAudioData;
+	}
+	NSMutableData *data = [NSMutableData dataWithCapacity:length];
+	float valueZero = 0.0;
+	do {
+		NSData *dataZero = [NSData dataWithBytes:&valueZero length:sizeof(valueZero)];
+		[data appendBytes:dataZero.bytes length:dataZero.length];
+	} while (data.length < length);
+	_silentAudioData = data;
+	return _silentAudioData;
+}
+
 - (void)setDelegate:(id <LFAudioEncodingDelegate>)delegate
 {
 	_aacDeleage = delegate;
@@ -96,7 +112,13 @@
 	}
 	else {
 		///< 积累
-		memcpy(leftBuf + leftLength, audioData.bytes, audioData.length);
+		if (self.aacDeleage && [self.aacDeleage respondsToSelector:@selector(shouldUsingSilentData:)] && [self.aacDeleage shouldUsingSilentData:self]) {
+			NSData *data = [self silentAudioDataWithLength:audioData.length];
+			memcpy(leftBuf + leftLength, data.bytes, audioData.length);
+		}
+		else {
+			memcpy(leftBuf + leftLength, audioData.bytes, audioData.length);
+		}
 		leftLength = leftLength + audioData.length;
 	}
 }

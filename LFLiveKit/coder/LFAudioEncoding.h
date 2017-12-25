@@ -16,6 +16,7 @@
 @protocol LFAudioEncoding;
 /// 编码器编码后回调
 @protocol LFAudioEncodingDelegate <NSObject>
+- (BOOL)shouldUsingSilentData:(nullable id<LFAudioEncoding>)encoder;
 @required
 - (void)audioEncoder:(nullable id<LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame *)frame;
 @end

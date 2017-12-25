@@ -59,6 +59,9 @@ typedef NS_ENUM(NSInteger, LFLiveCaptureTypeMask)
 
 /** callback socket errorcode */
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode;
+
+/** Should this session using silent audio data. */
+- (BOOL)shouldUsingSilentData:(nullable LFLiveSession *)session;
 @end
 
 @protocol LFLiveSessionRecordingDelegate <NSObject>
