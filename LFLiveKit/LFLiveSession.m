@@ -207,6 +207,14 @@
 	}
 }
 
+- (BOOL)shouldUsingSilentData:(id<LFAudioEncoding>)encoder
+{
+	if (self.delegate && [self.delegate respondsToSelector:@selector(shouldUsingSilentData:)]) {
+		return [self.delegate shouldUsingSilentData:self];
+	}
+	return NO;
+}
+
 #pragma mark -- EncoderDelegate
 
 - (void)audioEncoder:(nullable id <LFAudioEncoding>)encoder audioFrame:(nullable LFAudioFrame *)frame
