@@ -10,7 +10,6 @@ Porting LFLiveKit to macOS
 [![Support](https://img.shields.io/badge/macOS-10.8-orange.svg)](https://www.apple.com/tw/macos)&nbsp;
 ![Platform](https://img.shields.io/badge/platform-macOS-ff69b4.svg)&nbsp;
 
-
 [LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit) is an open source
 RTMP streaming SDK for iOS, and the project ports LFLiveKit to macOS.
 It helps you to broadcast RTMP streams in your macOS apps.
@@ -43,25 +42,30 @@ _session = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig audioDe
 _session.delegate = self;
 ```
 
+## Installation
+
+The SDK supports CocoaPods. Please add pod 'LFLiveKitMac'
+to your Podfile, and then call pod install.
+
 ## Modification from the Original LFLiveKit
 
 Since APIs differ between iOS and macOS, we need to modify LFLiveKit
 to make it able to build and run on macOS. What we did are including
 
-* Change all of the OpenES API calls to corresponding OpenGL ones.
-* Change the audio component for audio recording. LFLiveKit uses the
+- Change all of the OpenES API calls to corresponding OpenGL ones.
+- Change the audio component for audio recording. LFLiveKit uses the
   remoteIO node on iOS, but we need to use kAudioUnitSubType_HALOutput
   on mac OS.
-* Change the way that GPUImageFramebuffer generates pixel
+- Change the way that GPUImageFramebuffer generates pixel
   buffer. GPUImageFramebuffer uses an iOS specific texture cache to
   read processed textures and write them into CVPixelBufferRef
   objects. However, the cache does not exist on macOS. We have to use
   another way to create CVPixelBufferRef objects.
-* LFHardwareAudioEncoder does not work on macOS, so we always use
+- LFHardwareAudioEncoder does not work on macOS, so we always use
   LFH264VideoEncoder.
-* Some video filters are removes temporarily in order to make the
+- Some video filters are removes temporarily in order to make the
   project simpler while doing porting.
-* Settings for camera torch and rotation are removed as well, since
+- Settings for camera torch and rotation are removed as well, since
   macOS does not support them.
 
 ## Notes
@@ -97,8 +101,7 @@ become noises.
 For further information about Audio Power Hint, please take a look at
 [Technical Note TN2321](https://developer.apple.com/library/content/technotes/tn2321/_index.html).
 
-Enjoy!
-
+Enjoy! 😀
 
 ## License
 
