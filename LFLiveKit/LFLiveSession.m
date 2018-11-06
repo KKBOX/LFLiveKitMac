@@ -190,13 +190,13 @@
 
 #pragma mark -- CaptureDelegate
 
-- (void)captureOutput:(nullable LFAudioCapture *)capture audioData:(nullable NSData *)audioData
+- (void)captureOutput:(nullable LFAudioCapture *)capture audioData:(nullable NSData *)audioData numberOfFrames:(UInt32)numberOfFrames
 {
 	if (self.uploading) {
 		[self.audioEncoder encodeAudioData:audioData timeStamp:NOW];
 	}
 	if (self.recordingDelegate) {
-		[self.recordingDelegate liveSession:self didReceiveAudioData:audioData];
+		[self.recordingDelegate liveSession:self didReceiveAudioData:audioData numberOfFrames:numberOfFrames];
 	}
 }
 
