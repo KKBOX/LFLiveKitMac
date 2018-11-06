@@ -281,7 +281,7 @@ static OSStatus handleInputBuffer(void *inRefCon, AudioUnitRenderActionFlags *io
 		}
 
 		if (!status) {
-			if (source.delegate && [source.delegate respondsToSelector:@selector(captureOutput:audioData:)]) {
+			if (source.delegate && [source.delegate respondsToSelector:@selector(captureOutput:audioData:numberOfFrames:)]) {
 				NSData *outData = [NSData dataWithBytes:buffers.mBuffers[0].mData length:buffers.mBuffers[0].mDataByteSize];
 				[source.delegate captureOutput:source audioData:outData numberOfFrames: inNumberFrames];
 			}
