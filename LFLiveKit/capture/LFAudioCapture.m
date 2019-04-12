@@ -23,7 +23,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 #pragma mark -- LiftCycle
 
-- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate
+- (nullable instancetype)initWithAudioConfiguration:(nullable LFLiveAudioConfiguration *)configuration audioCaptureDevice:(nullable AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate channels:(UInt32 *)outChannels
 {
 	if (self = [super init]) {
 		_configuration = configuration;
@@ -63,12 +63,12 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 			if (status == noErr) {
 				status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &inputDevice, sizeof(inputDevice));
 				if (status == noErr) {
-					[self updateFormatForDevice:inputDevice sampleRate:outSampleRate];
+					[self updateFormatForDevice:inputDevice sampleRate:outSampleRate channels:outChannels];
 				}
 			}
 		}
 		else {
-			[self setAudioCaptureDevice:device sampleRate:outSampleRate];
+			[self setAudioCaptureDevice:device sampleRate:outSampleRate channels:outChannels];
 		}
 
 		AURenderCallbackStruct cb;
@@ -85,7 +85,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	return self;
 }
 
-- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate
+- (void)setAudioCaptureDevice:(nonnull AVCaptureDevice *)device sampleRate:(Float64 *)outSampleRate channels:(UInt32 *)outChannels
 {
 	if (![device hasMediaType:AVMediaTypeAudio]) {
 		return;
@@ -134,7 +134,7 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 		if ([(__bridge NSString *)deviceUID isEqualToString:device.uniqueID]) {
 			status = AudioUnitSetProperty(self.componetInstance, kAudioOutputUnitProperty_CurrentDevice, kAudioUnitScope_Global, 0, &audioDevices[i], sizeof(audioDevices[i]));
-			[self updateFormatForDevice:audioDevices[i] sampleRate:outSampleRate];
+			[self updateFormatForDevice:audioDevices[i] sampleRate:outSampleRate channels:outChannels];
 			break;
 		}
 	}
@@ -143,65 +143,51 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 	audioDevices = NULL;
 }
 
-- (void)updateFormatForDevice:(AudioDeviceID)device sampleRate:(Float64 *)outSampleRate
+- (void)updateFormatForDevice:(AudioDeviceID)device sampleRate:(Float64 *)outSampleRate channels:(UInt32 *)outChannels
 {
-	// https://stackoverflow.com/questions/18127114/setting-sample-rate-on-auhal
-	AudioObjectPropertyAddress propertyAddress;
-	propertyAddress.mSelector = kAudioDevicePropertyAvailableNominalSampleRates;
 
-	UInt32 propertySize = 0;
-	OSStatus status = noErr;
-	status = AudioObjectGetPropertyDataSize(device, &propertyAddress, 0, NULL, &propertySize);
-	if (noErr != status) {
+	AudioObjectPropertyAddress propertyAddress = {0};
+	CFStringRef uidString = NULL;
+	UInt32 dataSize = sizeof(uidString);
+	propertyAddress.mSelector = kAudioDevicePropertyDeviceUID;
+	propertyAddress.mScope = kAudioDevicePropertyScopeInput;
+	propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+	OSStatus status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &dataSize, &uidString);
+	if (kAudioHardwareNoError != status) {
+		fprintf(stderr, "AudioObjectGetPropertyData (kAudioDevicePropertyDeviceUID) failed: %i\n", status);
 		return;
 	}
-
-	int valueCount = propertySize / sizeof(AudioValueRange);
-	if (valueCount == 0) {
-		return;
-	}
-	AudioValueRange *availableSampleRates = (AudioValueRange *)(malloc(propertySize));
-
-	status = AudioObjectGetPropertyData(device, &propertyAddress, 0, NULL, &propertySize, availableSampleRates);
-	if (noErr != status) {
-		return;
-	}
-
-	AudioValueRange inputSampleRate = availableSampleRates[0];
-
-	for (int index = 0; index < valueCount; index++) {
-		AudioValueRange aSampleRate = availableSampleRates[index];
-		if (aSampleRate.mMinimum >= 44100) {
-			inputSampleRate = aSampleRate;
+	AVCaptureDevice *captureDevice = [AVCaptureDevice deviceWithUniqueID: (__bridge NSString *)uidString];
+	UInt32 channels = 0;
+	Float64 sampleRate = 0;
+	for (NSUInteger i = 0; i < [captureDevice formats].count; i++) {
+		const AudioFormatListItem *audioFormatListItem = CMAudioFormatDescriptionGetFormatList([[captureDevice formats][i] formatDescription], nil);
+		AudioStreamBasicDescription asbd = audioFormatListItem->mASBD;
+		if (asbd.mSampleRate >= 44100 && asbd.mChannelsPerFrame >= 2) {
+			channels = 2;
+			sampleRate = asbd.mSampleRate;
 			break;
 		}
-		if (aSampleRate.mMinimum > inputSampleRate.mMinimum) {
-			inputSampleRate = aSampleRate;
+		if (asbd.mSampleRate > sampleRate) {
+			channels = asbd.mChannelsPerFrame >= 2 ? 2 : asbd.mChannelsPerFrame < 2 ? 1 : asbd.mChannelsPerFrame;
+			sampleRate = asbd.mSampleRate;
 		}
+		
 	}
-
-	propertyAddress.mSelector = kAudioDevicePropertyNominalSampleRate;
-	status = AudioObjectSetPropertyData(device, &propertyAddress, 0, NULL, sizeof(inputSampleRate), &inputSampleRate);
-	if (noErr != status) {
-		return;
-	}
-
-	*outSampleRate = inputSampleRate.mMinimum;
+	*outSampleRate = sampleRate;
+	*outChannels = channels;
 
 	AudioStreamBasicDescription streamFormatDescription = {0};
-	streamFormatDescription.mSampleRate = inputSampleRate.mMinimum;
+	streamFormatDescription.mSampleRate = sampleRate;
 	streamFormatDescription.mFormatID = kAudioFormatLinearPCM;
 	streamFormatDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
-
-	streamFormatDescription.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;
+	streamFormatDescription.mChannelsPerFrame = channels;
 	streamFormatDescription.mFramesPerPacket = 1;
 	streamFormatDescription.mBitsPerChannel = 16;
 	streamFormatDescription.mBytesPerFrame = streamFormatDescription.mBitsPerChannel / 8 * streamFormatDescription.mChannelsPerFrame;
 	streamFormatDescription.mBytesPerPacket = streamFormatDescription.mBytesPerFrame * streamFormatDescription.mFramesPerPacket;
 	streamFormatDescription.mReserved = 0;
 	AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &streamFormatDescription, sizeof(streamFormatDescription));
-
-	free(availableSampleRates);
 }
 
 - (void)dealloc
