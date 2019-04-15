@@ -158,34 +158,35 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 		return;
 	}
 	AVCaptureDevice *captureDevice = [AVCaptureDevice deviceWithUniqueID: (__bridge NSString *)uidString];
-	if (!captureDevice) {
+	if (captureDevice) {
+		UInt32 newChannels = 0;
+		Float64 newSampleRate = 0;
+		for (NSUInteger i = 0; i < [captureDevice formats].count; i++) {
+			const AudioFormatListItem *audioFormatListItem = CMAudioFormatDescriptionGetFormatList([[captureDevice formats][i] formatDescription], nil);
+			AudioStreamBasicDescription asbd = audioFormatListItem->mASBD;
+			if (asbd.mSampleRate >= 44100 && asbd.mChannelsPerFrame >= 2) {
+				newChannels = 2;
+				newSampleRate = asbd.mSampleRate;
+				break;
+			}
+			if (asbd.mSampleRate > newSampleRate) {
+				newChannels = asbd.mChannelsPerFrame >= 2 ? 2 : asbd.mChannelsPerFrame < 2 ? 1 : asbd.mChannelsPerFrame;
+				newSampleRate = asbd.mSampleRate;
+			}
+			
+		}
+		*outSampleRate = newSampleRate;
+		*outChannels = newChannels;
+	}
+	else {
 		NSLog(@"No available captureDevice with uid: %@", uidString);
-		return;
 	}
-	UInt32 channels = 0;
-	Float64 sampleRate = 0;
-	for (NSUInteger i = 0; i < [captureDevice formats].count; i++) {
-		const AudioFormatListItem *audioFormatListItem = CMAudioFormatDescriptionGetFormatList([[captureDevice formats][i] formatDescription], nil);
-		AudioStreamBasicDescription asbd = audioFormatListItem->mASBD;
-		if (asbd.mSampleRate >= 44100 && asbd.mChannelsPerFrame >= 2) {
-			channels = 2;
-			sampleRate = asbd.mSampleRate;
-			break;
-		}
-		if (asbd.mSampleRate > sampleRate) {
-			channels = asbd.mChannelsPerFrame >= 2 ? 2 : asbd.mChannelsPerFrame < 2 ? 1 : asbd.mChannelsPerFrame;
-			sampleRate = asbd.mSampleRate;
-		}
-		
-	}
-	*outSampleRate = sampleRate;
-	*outChannels = channels;
-
+	
 	AudioStreamBasicDescription streamFormatDescription = {0};
-	streamFormatDescription.mSampleRate = sampleRate;
+	streamFormatDescription.mSampleRate = *outSampleRate;
 	streamFormatDescription.mFormatID = kAudioFormatLinearPCM;
 	streamFormatDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
-	streamFormatDescription.mChannelsPerFrame = channels;
+	streamFormatDescription.mChannelsPerFrame = *outChannels;
 	streamFormatDescription.mFramesPerPacket = 1;
 	streamFormatDescription.mBitsPerChannel = 16;
 	streamFormatDescription.mBytesPerFrame = streamFormatDescription.mBitsPerChannel / 8 * streamFormatDescription.mChannelsPerFrame;
