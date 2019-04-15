@@ -158,6 +158,10 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 		return;
 	}
 	AVCaptureDevice *captureDevice = [AVCaptureDevice deviceWithUniqueID: (__bridge NSString *)uidString];
+	if (!captureDevice) {
+		NSLog(@"No available captureDevice with uid: %@", uidString);
+		return;
+	}
 	UInt32 channels = 0;
 	Float64 sampleRate = 0;
 	for (NSUInteger i = 0; i < [captureDevice formats].count; i++) {
