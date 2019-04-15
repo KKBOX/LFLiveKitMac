@@ -166,7 +166,9 @@
 	_audioDevice = audioDevice;
 	Float64 sampleRate = 44100;
 	UInt32 channels = 2;
-	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice sampleRate:&sampleRate channels:&channels];	self.audioConfiguration.audioSampleRate = sampleRate;
+	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice sampleRate:&sampleRate channels:&channels];
+	self.audioConfiguration.audioSampleRate = sampleRate;
+	self.audioConfiguration.numberOfChannels = channels;
 	_audioEncoder = nil;
 	[self audioEncoder];
 }
