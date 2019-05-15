@@ -175,6 +175,11 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 			}
 			
 		}
+		propertyAddress.mSelector = kAudioDevicePropertyNominalSampleRate;
+		status = AudioObjectSetPropertyData(device, &propertyAddress, 0, NULL, sizeof(newSampleRate), &newSampleRate);
+		if (noErr != status) {
+			return;
+		}
 		*outSampleRate = newSampleRate;
 		*outChannels = newChannels;
 	}
