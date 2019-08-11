@@ -165,8 +165,10 @@
 {
 	_audioDevice = audioDevice;
 	Float64 sampleRate = 44100;
-	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice sampleRate:&sampleRate];
+	UInt32 channels = 2;
+	[self.audioCaptureSource setAudioCaptureDevice:_audioDevice sampleRate:&sampleRate channels:&channels];
 	self.audioConfiguration.audioSampleRate = sampleRate;
+	self.audioConfiguration.numberOfChannels = channels;
 	_audioEncoder = nil;
 	[self audioEncoder];
 }
@@ -196,7 +198,7 @@
 		[self.audioEncoder encodeAudioData:audioData timeStamp:NOW];
 	}
 	if (self.recordingDelegate) {
-		[self.recordingDelegate liveSession:self didReceiveAudioData:audioData];
+		[self.recordingDelegate liveSession:self didReceiveAudioData:audioData withNumberOfChannels:_audioConfiguration.numberOfChannels];
 	}
 }
 
@@ -376,9 +378,11 @@
 	if (!_audioCaptureSource) {
 		if (self.captureType & LFLiveCaptureMaskAudio) {
 			Float64 sampleRate = 44100;
-			_audioCaptureSource = [[LFAudioCapture alloc] initWithAudioConfiguration:_audioConfiguration audioCaptureDevice:_audioDevice sampleRate:&sampleRate];
+			UInt32 channels = 2;
+			_audioCaptureSource = [[LFAudioCapture alloc] initWithAudioConfiguration:_audioConfiguration audioCaptureDevice:_audioDevice sampleRate:&sampleRate channels:&channels];
 			_audioCaptureSource.delegate = self;
 			self.audioConfiguration.audioSampleRate = sampleRate;
+			self.audioConfiguration.numberOfChannels = channels;
 			self.audioEncoder = nil;
 		}
 	}

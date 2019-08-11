@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, LFLiveCaptureTypeMask)
 @end
 
 @protocol LFLiveSessionRecordingDelegate <NSObject>
-- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data;
+- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data withNumberOfChannels:(NSUInteger)numberOfChannels;
 @end
 
 @class LFLiveStreamInfo;
