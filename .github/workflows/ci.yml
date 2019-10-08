@@ -1,0 +1,12 @@
+name: Build
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Pod lib lint
+        run: pod lib lint --verbose --allow-warnings
+        working-directory: ./
