@@ -4,6 +4,7 @@ Porting LFLiveKit to macOS
 
 ---
 
+[![Actions Status](https://github.com/KKBOX/LFLiveKitMac/workflows/Build/badge.svg)](https://github.com/KKBOX/LFLiveKitMac/actions)
 [![build](https://api.travis-ci.org/KKBOX/LFLiveKitMac.svg)](https://travis-ci.org/KKBOX/LFLiveKitMac)
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/KKBOX/LFLiveKitMac/blob/master/LICENSE)&nbsp;
 [![CocoaPods](http://img.shields.io/cocoapods/v/LFLiveKitMac.svg?style=flat)](http://cocoapods.org/pods/LFLiveKitMac)&nbsp;
@@ -16,10 +17,10 @@ It helps you to broadcast RTMP streams in your macOS apps.
 
 ## Requirements
 
-Currently it is only tested on 
+Currently it is only tested on
 
 - macOS 10.13 and Xcode 9.1 to 9.2.
-- macOS 10.12 and Xcode 8.3. 
+- macOS 10.12 and Xcode 8.3.
 
 However, it should support Xcode 7 and macOS 10.8 and above.
 
