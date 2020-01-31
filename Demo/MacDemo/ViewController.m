@@ -284,7 +284,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 	self.state = ViewControllerStateError;
 }
 
-- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data
+- (void)liveSession:(nullable LFLiveSession *)session didReceiveAudioData:(nonnull NSData *)data withNumberOfChannels:(NSUInteger)numberOfChannels
 {
 	self.currentAudioData = data;
 }
