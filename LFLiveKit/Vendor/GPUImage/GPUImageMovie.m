@@ -224,7 +224,7 @@
 #if TARGET_OS_IOS
         [self.audioEncodingTarget setShouldInvalidateAudioSampleWhenDone:YES];
 #else
-#warning Missing OSX implementation
+//#warning Missing OSX implementation
 #endif
         
         // This might need to be extended to handle movies with more than one audio track

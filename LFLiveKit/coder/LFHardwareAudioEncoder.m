@@ -78,7 +78,7 @@
 		char *totalBuf = malloc(totalSize);
 		char *p = totalBuf;
 
-		memset(totalBuf, (int) totalSize, 0);
+		memset(totalBuf, 0, (int) totalSize);
 		memcpy(totalBuf, leftBuf, leftLength);
 		memcpy(totalBuf + leftLength, audioData.bytes, audioData.length);
 
@@ -198,7 +198,7 @@
 
 //    OSStatus result = AudioConverterNewSpecific(&inputFormat, &outputFormat, 2, requestedCodecs, &m_converter);;
 	OSStatus result = AudioConverterNew(&inputFormat, &outputFormat, &m_converter);
-	UInt32 outputBitrate = _configuration.audioBitrate;
+	UInt32 outputBitrate = (UInt32)_configuration.audioBitrate;
 	UInt32 propSize = sizeof(outputBitrate);
 
 

@@ -157,6 +157,7 @@
 
 - (void)reshape;
 {
+	[super reshape];
     CGSize viewSize = self.bounds.size;
     if ([self respondsToSelector:@selector(convertSizeToBacking:)])
     {
