@@ -7,6 +7,7 @@
 //
 
 #import "LFStreamRTMPSocket.h"
+@import QuartzCore;
 
 #if __has_include(<pili-librtmp/rtmp.h>)
 #import <pili-librtmp/rtmp.h>

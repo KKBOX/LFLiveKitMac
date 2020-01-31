@@ -122,7 +122,7 @@ HTTPResult
 
     host = p1 + 3;
     path = strchr(host, '/');
-    hlen = path - host;
+    hlen = (int)(path - host);
     strncpy(hbuf, host, hlen);
     hbuf[hlen] = '\0';
     host = hbuf;

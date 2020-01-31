@@ -134,8 +134,8 @@ uint32_t
     return timeGetTime();
 #else
     struct tms t;
-    if (!clk_tck) clk_tck = sysconf(_SC_CLK_TCK);
-    return times(&t) * 1000 / clk_tck;
+    if (!clk_tck) clk_tck = (int)sysconf(_SC_CLK_TCK);
+    return (int)times(&t) * 1000 / clk_tck;
 #endif
 }
 
@@ -363,7 +363,7 @@ void PILI_RTMP_SetupStream(PILI_RTMP *r,
         if (socksport)
             hostname[socksport - sockshost->av_val] = '\0';
         r->Link.sockshost.av_val = hostname;
-        r->Link.sockshost.av_len = strlen(hostname);
+        r->Link.sockshost.av_len = (int)strlen(hostname);
 
         r->Link.socksport = socksport ? atoi(socksport + 1) : 1080;
         RTMP_Log(RTMP_LOGDEBUG, "Connecting via SOCKS proxy: %s:%d", r->Link.sockshost.av_val,
@@ -396,7 +396,7 @@ void PILI_RTMP_SetupStream(PILI_RTMP *r,
     r->Link.stopTime = dStop;
     if (bLiveStream)
         r->Link.lFlags |= RTMP_LF_LIVE;
-    r->Link.timeout = timeout;
+    r->Link.timeout = (int)timeout;
 
     r->Link.protocol = protocol;
     r->Link.hostname = *host;
@@ -500,7 +500,7 @@ static int
             case 'S':
                 prop.p_type = AMF_STRING;
                 prop.p_vu.p_aval.av_val = p;
-                prop.p_vu.p_aval.av_len = av->av_len - (p - arg);
+                prop.p_vu.p_aval.av_len = (int)(av->av_len - (p - arg));
                 break;
             case 'N':
                 prop.p_type = AMF_NUMBER;
@@ -526,7 +526,7 @@ static int
         if (!p || !*depth)
             return -1;
         prop.p_name.av_val = (char *)arg + 3;
-        prop.p_name.av_len = p - (arg + 3);
+        prop.p_name.av_len = (int)(p - (arg + 3));
 
         p++;
         switch (arg[1]) {
@@ -537,7 +537,7 @@ static int
             case 'S':
                 prop.p_type = AMF_STRING;
                 prop.p_vu.p_aval.av_val = p;
-                prop.p_vu.p_aval.av_len = av->av_len - (p - arg);
+                prop.p_vu.p_aval.av_len = (int)(av->av_len - (p - arg));
                 break;
             case 'N':
                 prop.p_type = AMF_NUMBER;
@@ -580,7 +580,7 @@ int RTMP_SetOpt(PILI_RTMP *r, const AVal *opt, AVal *arg, RTMPError *error) {
             } break;
             case OPT_INT: {
                 long l = strtol(arg->av_val, NULL, 0);
-                *(int *)v = l;
+                *(int *)v = (int)l;
             } break;
             case OPT_BOOL: {
                 int j, fl;
@@ -643,18 +643,18 @@ int PILI_RTMP_SetupURL(PILI_RTMP *r, const char *url, RTMPError *error) {
         if (!p2)
             break;
         opt.av_val = p1;
-        opt.av_len = p2 - p1;
+        opt.av_len = (int)(p2 - p1);
         *p2++ = '\0';
         arg.av_val = p2;
         ptr = strchr(p2, ' ');
         if (ptr) {
             *ptr = '\0';
-            arg.av_len = ptr - p2;
+            arg.av_len = (int)(ptr - p2);
             /* skip repeated spaces */
             while (ptr[1] == ' ')
                 *ptr++ = '\0';
         } else {
-            arg.av_len = strlen(p2);
+            arg.av_len = (int)strlen(p2);
         }
 
         /* unescape */
@@ -673,7 +673,7 @@ int PILI_RTMP_SetupURL(PILI_RTMP *r, const char *url, RTMPError *error) {
                 port--;
             }
         }
-        arg.av_len = p2 - arg.av_val;
+        arg.av_len = (int)(p2 - arg.av_val);
 
         ret = RTMP_SetOpt(r, &opt, &arg, error);
         if (!ret)
@@ -681,17 +681,17 @@ int PILI_RTMP_SetupURL(PILI_RTMP *r, const char *url, RTMPError *error) {
     }
 
     if (!r->Link.tcUrl.av_len) {
-        r->Link.tcUrl.av_val = url;
+        r->Link.tcUrl.av_val = (char *)url;
         if (r->Link.app.av_len) {
             AVal *domain = &r->Link.domain;
             if (domain->av_len == 0 && r->Link.app.av_val < url + len) {
                 /* if app is part of original url, just use it */
-                r->Link.tcUrl.av_len = r->Link.app.av_len + (r->Link.app.av_val - url);
+                r->Link.tcUrl.av_len = (int)(r->Link.app.av_len + (r->Link.app.av_val - url));
             } else {
                 if (domain->av_len == 0) {
                     domain = &r->Link.hostname;
                 }
-                if (r->Link.port = 0) {
+                if (r->Link.port = 0) { // zonble: =0?
                     r->Link.port = 1935;
                 }
                 len = domain->av_len + r->Link.app.av_len + sizeof("rtmpte://:65535/");
@@ -705,7 +705,7 @@ int PILI_RTMP_SetupURL(PILI_RTMP *r, const char *url, RTMPError *error) {
                 r->Link.lFlags |= RTMP_LF_FTCU;
             }
         } else {
-            r->Link.tcUrl.av_len = strlen(url);
+            r->Link.tcUrl.av_len = (int)strlen(url);
         }
     }
 
@@ -737,7 +737,7 @@ static int add_addr_info(PILI_RTMP *r, struct addrinfo *hints, struct addrinfo *
         hostname = host->av_val;
     }
 
-    struct addrinfo *cur_ai;
+//    struct addrinfo *cur_ai;
     char portstr[10];
     snprintf(portstr, sizeof(portstr), "%d", port);
     int addrret = getaddrinfo(hostname, portstr, hints, ai);
@@ -1585,7 +1585,7 @@ static int
                 return FALSE;
         }
     }
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -1643,7 +1643,7 @@ int PILI_RTMP_SendCreateStream(PILI_RTMP *r, RTMPError *error) {
     enc = AMF_EncodeNumber(enc, pend, ++r->m_numInvokes);
     *enc++ = AMF_NULL; /* NULL */
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -1673,7 +1673,7 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -1702,7 +1702,7 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
@@ -1731,7 +1731,7 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
@@ -1760,14 +1760,14 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
 
 SAVC(publish);
 SAVC(live);
-SAVC(record);
+//SAVC(record);
 
 static int
     SendPublish(PILI_RTMP *r, RTMPError *error) {
@@ -1796,7 +1796,7 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -1823,7 +1823,7 @@ static int
     *enc++ = AMF_NULL;
     enc = AMF_EncodeNumber(enc, pend, dStreamId);
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     /* no response expected */
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
@@ -1851,7 +1851,7 @@ int PILI_RTMP_SendPause(PILI_RTMP *r, int DoPause, int iTime, RTMPError *error) 
     enc = AMF_EncodeBoolean(enc, pend, DoPause);
     enc = AMF_EncodeNumber(enc, pend, (double)iTime);
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     RTMP_Log(RTMP_LOGDEBUG, "%s, %d, pauseTime=%d", __FUNCTION__, DoPause, iTime);
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
@@ -1884,7 +1884,7 @@ int PILI_RTMP_SendSeek(PILI_RTMP *r, int iTime, RTMPError *error) {
     *enc++ = AMF_NULL;
     enc = AMF_EncodeNumber(enc, pend, (double)iTime);
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     r->m_read.flags |= RTMP_READ_SEEKING;
     r->m_read.nResumeTS = 0;
@@ -1972,7 +1972,7 @@ static int
     enc = AMF_EncodeNumber(enc, pend, ++r->m_numInvokes);
     *enc++ = AMF_NULL;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     /* triggers _onbwcheck and eventually results in _onbwdone */
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
@@ -2000,7 +2000,7 @@ static int
     *enc++ = AMF_NULL;
     enc = AMF_EncodeNumber(enc, pend, (double)r->m_nBWCheckCounter++);
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
@@ -2027,7 +2027,7 @@ static int
     enc = AMF_EncodeNumber(enc, pend, txn);
     *enc++ = AMF_NULL;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
@@ -2091,7 +2091,7 @@ static int
             return FALSE;
     }
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -2131,7 +2131,7 @@ static int
     *enc++ = 0;
     *enc++ = AMF_OBJECT_END;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, TRUE, error);
 }
@@ -2158,7 +2158,7 @@ static int
     if (!enc)
         return FALSE;
 
-    packet.m_nBodySize = enc - packet.m_body;
+    packet.m_nBodySize = (int)(enc - packet.m_body);
 
     return PILI_RTMP_SendPacket(r, &packet, FALSE, error);
 }
@@ -2876,7 +2876,7 @@ int PILI_RTMP_ReadPacket(PILI_RTMP *r, PILI_RTMPPacket *packet) {
         return FALSE;
     }
 
-    hSize = nSize + (header - (char *)hbuf);
+    hSize = (int)(nSize + (header - (char *)hbuf));
 
     if (nSize >= 3) {
         packet->m_nTimeStamp = AMF_DecodeInt24(header);
@@ -3260,7 +3260,7 @@ int PILI_RTMP_SendPacket(PILI_RTMP *r, PILI_RTMPPacket *packet, int queue, RTMPE
         }
     }
     if (tbuf) {
-        int wrote = WriteN(r, tbuf, toff - tbuf, error);
+        int wrote = WriteN(r, tbuf, (int)(toff - tbuf), error);
         free(tbuf);
         tbuf = NULL;
         if (!wrote)
@@ -3395,14 +3395,14 @@ int PILI_RTMPSockBuf_Fill(PILI_RTMPSockBuf *sb) {
         sb->sb_start = sb->sb_buf;
 
     while (1) {
-        nBytes = sizeof(sb->sb_buf) - sb->sb_size - (sb->sb_start - sb->sb_buf);
+        nBytes = (int)(sizeof(sb->sb_buf) - sb->sb_size - (sb->sb_start - sb->sb_buf));
 #if defined(CRYPTO) && !defined(NO_SSL)
         if (sb->sb_ssl) {
             nBytes = TLS_read(sb->sb_ssl, sb->sb_start + sb->sb_size, nBytes);
         } else
 #endif
         {
-            nBytes = recv(sb->sb_socket, sb->sb_start + sb->sb_size, nBytes, 0);
+            nBytes = (int)(recv(sb->sb_socket, sb->sb_start + sb->sb_size, nBytes, 0));
         }
         if (nBytes != -1) {
             sb->sb_size += nBytes;
@@ -3437,7 +3437,7 @@ int PILI_RTMPSockBuf_Send(PILI_RTMPSockBuf *sb, const char *buf, int len) {
     } else
 #endif
     {
-        rc = send(sb->sb_socket, buf, len, 0);
+        rc = (int)(send(sb->sb_socket, buf, len, 0));
     }
     return rc;
 }
@@ -3995,10 +3995,10 @@ static int
     return ret;
 }
 
-static const char flvHeader[] = {'F', 'L', 'V', 0x01,
-                                 0x00, /* 0x04 == audio, 0x01 == video */
-                                 0x00, 0x00, 0x00, 0x09,
-                                 0x00, 0x00, 0x00, 0x00};
+//static const char flvHeader[] = {'F', 'L', 'V', 0x01,
+//                                 0x00, /* 0x04 == audio, 0x01 == video */
+//                                 0x00, 0x00, 0x00, 0x09,
+//                                 0x00, 0x00, 0x00, 0x00};
 
 #define HEADERBUF (128 * 1024)
 int PILI_RTMP_Read(PILI_RTMP *r, char *buf, int size) {
@@ -4108,7 +4108,7 @@ int PILI_RTMP_Write(PILI_RTMP *r, const char *buf, int size, RTMPError *error) {
             pend = enc + pkt->m_nBodySize;
             if (pkt->m_packetType == 0x12) {
                 enc = AMF_EncodeString(enc, pend, &av_setDataFrame);
-                pkt->m_nBytesRead = enc - pkt->m_body;
+                pkt->m_nBytesRead = (int)(enc - pkt->m_body);
             }
         } else {
             enc = pkt->m_body + pkt->m_nBytesRead;

@@ -94,11 +94,11 @@ parsehost:
     {
         int hostlen;
         if (slash)
-            hostlen = slash - p;
+            hostlen = (int)(slash - p);
         else
-            hostlen = end - p;
+            hostlen = (int)(end - p);
         if (col && col - p < hostlen)
-            hostlen = col - p;
+            hostlen = (int)(col - p);
 
         if (hostlen < 256) {
             host->av_val = p;
@@ -142,9 +142,9 @@ parsehost:
             char *domain_end = strchr(domain, '&');
             int host_len = 0;
             if (domain_end) {
-                host_len = domain_end - domain;
+                host_len = (int)(domain_end - domain);
             } else {
-                host_len = strlen(domain);
+                host_len = (int)strlen(domain);
             }
             if (host_len < 256) {
                 domainName->av_val = domain;
@@ -168,20 +168,20 @@ parsehost:
         if (slash2)
             slash3 = strchr(slash2 + 1, '/');
 
-        applen = end - p; /* ondemand, pass all parameters as app */
+        applen = (int)(end - p); /* ondemand, pass all parameters as app */
         appnamelen = applen; /* ondemand length */
 
         if (ques && strstr(p, "slist=")) { /* whatever it is, the '?' and slist= means we need to use everything as app and parse plapath from slist= */
-            appnamelen = ques - p;
+            appnamelen = (int)(ques - p);
         } else if (strncmp(p, "ondemand/", 9) == 0) {
             /* app = ondemand/foobar, only pass app=ondemand */
             applen = 8;
             appnamelen = 8;
         } else { /* app!=ondemand, so app is app[/appinstance] */
             if (slash3)
-                appnamelen = slash3 - p;
+                appnamelen = (int)(slash3 - p);
             else if (slash2)
-                appnamelen = slash2 - p;
+                appnamelen = (int)(slash2 - p);
 
             applen = appnamelen;
         }
@@ -197,7 +197,7 @@ parsehost:
         p++;
 
     if (end - p) {
-        AVal av = {p, end - p};
+        AVal av = {p, (int)(end - p)};
         PILI_RTMP_ParsePlaypath(&av, playpath);
     }
 
@@ -233,11 +233,11 @@ void PILI_RTMP_ParsePlaypath(AVal *in, AVal *out) {
     if ((*ppstart == '?') &&
         (temp = strstr(ppstart, "slist=")) != 0) {
         ppstart = temp + 6;
-        pplen = strlen(ppstart);
+        pplen = (int)strlen(ppstart);
 
         temp = strchr(ppstart, '&');
         if (temp) {
-            pplen = temp - ppstart;
+            pplen = (int)(temp - ppstart);
         }
     }
 
@@ -303,7 +303,7 @@ void PILI_RTMP_ParsePlaypath(AVal *in, AVal *out) {
     *destptr = '\0';
 
     out->av_val = streamname;
-    out->av_len = destptr - streamname;
+    out->av_len = (int)(destptr - streamname);
 }
 
 int PILI_RTMP_ParseURL(const char *url, int *protocol, AVal *host,

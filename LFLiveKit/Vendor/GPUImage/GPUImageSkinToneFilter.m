@@ -240,7 +240,7 @@ NSString *const kGPUImageSkinToneFragmentShaderString = SHADER_STRING
 - (void)setUpperSkinToneColor:(GPUImageSkinToneUpperColor)newValue
 {
     upperSkinToneColor = newValue;
-    [self setInteger:newValue forUniform:upperSkinToneColorUniform program:filterProgram];
+    [self setInteger:(int)newValue forUniform:upperSkinToneColorUniform program:filterProgram];
 }
 
 @end

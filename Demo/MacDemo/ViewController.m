@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerState) {
 	ViewControllerStateError
 };
 
-@interface ViewController () <LFLiveSessionDelegate, LFLiveSessionRecordingDelegate>
+@interface ViewController () <LFLiveSessionDelegate, LFLiveSessionRecordingDelegate, VolumeViewDelegate>
 {
 	LFLiveSession *_session;
 }
